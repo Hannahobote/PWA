@@ -9,19 +9,42 @@
    font-family: Arial, Helvetica, sans-serif;
  }
 
+ 
+ #cardBack {
+  height: 250px;
+  width: 250px;
+  background-color: blue;
+  position: absolute;
+ }
+
  #cardFront {
+  height: 250px;
+  width: 250px;
   visibility: hidden;
+  position: absolute;
  }
  
+ #card {
+  height: 50px;
+  width: 50px;
+ }
+
  </style>
 
 <h1> my card  </h1>
- <div id="card">
+ <!--<div id="card">
   <img id="cardBack">
+  <img id="cardFront">
+ </div> -->
+
+ <div id="card">
+    <img 
+      id="cardBack"
+      src="https://thumbs.dreamstime.com/b/playing-card-back-side-isolated-white-clipping-path-included-playing-card-back-side-isolated-white-172500899.jpg"
+    >
   <img id="cardFront">
  </div>
 
- 
  `
 
  /**
@@ -34,8 +57,7 @@
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
-      .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
-    this.shadowRoot.querySelector('#cardBack').src = this.getAttribute('cardBack')
+      .appendChild(template.content.cloneNode(true))
     this.shadowRoot.querySelector('#cardFront').src = this.getAttribute('cardFront')
     this.cardFront = this.shadowRoot.querySelector('#cardFront')
     this.cardBack = this.shadowRoot.querySelector('#cardBack')
@@ -62,7 +84,7 @@
     this.cardBack.addEventListener('click', () => this.flipCard())
     this.cardFront.addEventListener('click', () => this.flipCard())
   }
-
+  
   disconnectedCallback() {
 
   }

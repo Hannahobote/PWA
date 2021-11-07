@@ -1,29 +1,19 @@
-// imports all the components. Later on only use this one file and import it to html to get acces to the components ?
-import './components/my-window/my-window.js'
-import './components/memory-game/memory-game.js'
+import { cardsdb } from '../my-card/cards-database.js'
+import '../my-card/my-card.js'
 
 /**
  * Define template.
  */
  const template = document.createElement('template') 
  template.innerHTML = `
-
- <style>
- body {
-   font-family: Arial, Helvetica, sans-serif;
- }
  
- </style>
- 
- <my-window></my-window>
- <memory-game></memory-game>
  
  `
 
  /**
   * Runs the app.
   */
- class myApp extends HTMLElement {
+ class memoryGame extends HTMLElement {
   constructor() {
     super()
 
@@ -31,9 +21,22 @@ import './components/memory-game/memory-game.js'
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
+
+    this.addAllCards()
     // Get elemens here 
     // TODO: Maybee you need to define some default values here
   }
+
+  
+
+  addAllCards () {
+    cardsdb.forEach(img => {
+      let card = document.createElement('my-card')
+      card.setAttribute('cardFront', img.cardFront)
+      card.set
+      this.shadowRoot.appendChild( card )
+    })
+  }
  }
 
- window.customElements.define('my-app', myApp);
+ window.customElements.define('memory-game', memoryGame);
