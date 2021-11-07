@@ -89,8 +89,9 @@ class myCard extends HTMLElement {
   setFrontImg(src) {
     //this.cardFront.src = src
     this.shadowRoot.querySelector('#cardFront').src = src
-    console.log(src)
   }
+
+
 
   connectedCallback() {
     this.cardBack.addEventListener('click', () => this.flipCard())
