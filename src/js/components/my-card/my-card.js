@@ -96,6 +96,8 @@ class myCard extends HTMLElement {
   disconnectedCallback() {
 
   }
+
+  // if cardFront== true, then remove card.
 }
 
 window.customElements.define('my-card', myCard);

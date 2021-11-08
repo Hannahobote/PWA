@@ -36,25 +36,27 @@ class memoryGame extends HTMLElement {
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
 
-      this.fourBtn = this.shadowRoot.querySelector('#four')
-      this.fourTwoBtn = this.shadowRoot.querySelector('#fourTwo')
-      this.twoBtn = this.shadowRoot.querySelector('#two')
-    // Get elemens here 
-    // TODO: Maybee you need to define some default values here
+    this.fourBtn = this.shadowRoot.querySelector('#four')
+    this.fourTwoBtn = this.shadowRoot.querySelector('#fourTwo')
+    this.twoBtn = this.shadowRoot.querySelector('#two')
   }
 
-  
+
   connectedCallback() {
     this.fourBtn.addEventListener('click', () => this.fourByFour())
-    this.fourTwoBtn.addEventListener('click', () => this.fourByTwo())
-    this.twoBtn.addEventListener('click', () => this.twoByTwo() )
+    this.fourTwoBtn.addEventListener('click', () => {
+      this.fourByTwo()
+      this.eventOnCard(this.getAllCards())
+    })
+    this.twoBtn.addEventListener('click', () => this.twoByTwo())
+    //this.allCards.addEventListener('click', this.match())
   }
 
-  
+
   disconnectedCallback() {
     this.fourBtn.removeEventListener('click', () => this.fourByFour())
     this.fourTwoBtn.removeEventListener('click', () => this.fourByTwo())
-    this.twoBtn.removeEventListener('click', () => this.twoByTwo() )
+    this.twoBtn.removeEventListener('click', () => this.twoByTwo())
   }
 
   shuffleCards(cardsArr) {
@@ -81,12 +83,14 @@ class memoryGame extends HTMLElement {
     let eigthCards = cardTwelve.slice(0, 8)
     eigthCards = this.shuffleCards(eigthCards)
     this.addCard(eigthCards)
+    this.removeBtn()
   }
 
   twoByTwo() {
     let fourCards = cardTwelve.slice(0, 4)
     fourCards = this.shuffleCards(fourCards)
     this.addCard(fourCards)
+    this.removeBtn()
   }
 
   /**
@@ -97,9 +101,47 @@ class memoryGame extends HTMLElement {
     this.fourTwoBtn.remove()
     this.twoBtn.remove()
   }
+
+  getAllCards () {
+    let allCards = this.shadowRoot.querySelectorAll('my-card')
+    let arrayCards = Array.from(allCards)
+    return arrayCards
+  }
+
+  eventOnCard(cards) {
+    let result = []
+    cards.forEach( card => {
+      card.addEventListener('click', evt => {
+        result.push(evt.target.id)
+        console.log(result)
+        this.match(result)
+        console.log(evt.target.id)
+      })
+    })
+  }
   // winner()
 
   // rule () // get the card on the bourd and match the id to each other.
+
+  // match() if match, remove from board, else flip cards back.
+  match(cardsToMatch) {
+    if(cardsToMatch.length < 2 ) {
+      console.log('no cards to match')
+    } 
+    if(cardsToMatch.length === 2 ) {
+      if(cardsToMatch.every( (val, i, arr) => val === arr[0] )) {
+        console.log('a match')
+        cardsToMatch.length = 0
+        console.log(cardsToMatch)
+      } else {
+        console.log('not a match')
+
+        cardsToMatch.length = 0
+        console.log(cardsToMatch)
+      }
+      
+    }
+  }
 
 }
 
