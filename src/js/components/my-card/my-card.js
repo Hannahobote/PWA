@@ -5,32 +5,27 @@ const template = document.createElement('template')
 template.innerHTML = `
 
  <style>
- body {
-   font-family: Arial, Helvetica, sans-serif;
- }
 
- 
  #cardBack {
-  height: 250px;
-  width: 250px;
-  background-color: blue;
+  height: 100px;
+  width: 100px;
   position: absolute;
  }
 
  #cardFront {
-  height: 250px;
-  width: 250px;
+  height: 100px;
+  width: 100px;
   visibility: hidden;
-  position: absolute;
+  position: relative;
  }
  
- #card {
+ /*.card {
   height: 50px;
   width: 50px;
- }
+ }*/
 
  </style>
- <div id="card">
+ <div class="card">
     <img 
       id="cardBack"
       src="https://thumbs.dreamstime.com/b/playing-card-back-side-isolated-white-clipping-path-included-playing-card-back-side-isolated-white-172500899.jpg"

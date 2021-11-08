@@ -4,20 +4,30 @@ import '../my-card/my-card.js'
 /**
  * Define template.
  */
- const template = document.createElement('template') 
- template.innerHTML = `
+const template = document.createElement('template')
+template.innerHTML = `
   <style>
-  
- my-card {
-   float: left;
- }
+   
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+  }
+ 
   </style>
+
+  <div class="board"> </div>
+
+  <button > 4x4 </button>
+  <button > 4x2 </button>
+  <button> 2x2 </button>
+
+
  `
 
- /**
-  * Runs the app.
-  */
- class memoryGame extends HTMLElement {
+/**
+ * Runs the app.
+ */
+class memoryGame extends HTMLElement {
   constructor() {
     super()
 
@@ -25,67 +35,48 @@ import '../my-card/my-card.js'
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
-    this.fourByFour()
-    //this.fourByFour()
-    
-    this.allCardEl = this.shadowRoot.querySelectorAll('my-card')
-    console.log(this.allCardEl)
+
+    this.twoByTwo()
 
     // Get elemens here 
     // TODO: Maybee you need to define some default values here
   }
 
-  shuffleCards(cardsArr){
+  shuffleCards(cardsArr) {
     return cardsArr.sort((a, b) => 0.5 - Math.random());
   }
 
-  fourbyfourCards () {
-    return this.shuffleCards(cardTwelve)
-  }
-
-  fourByFour() {
-    let cardsData = this.fourbyfourCards()
+  addCard(cardsData) {
     cardsData.forEach(data => {
-        let card = document.createElement('my-card')
-        this.shadowRoot.appendChild( card )
-        card.setFrontImg(data.cardFront)
-        card.id = data.id
-        console.log(data.id)
+      let card = document.createElement('my-card')
+      card.setFrontImg(data.cardFront)
+      card.id = data.id
+      this.shadowRoot.querySelector('.board').appendChild(card)
+      //this.shadowRoot.appendChild(card)
+
     })
   }
 
+  fourByFour() {
+    let cardsData = this.shuffleCards([...cardTwelve])
+    this.addCard(cardsData)
+  }
+
+  fourByTwo() {
+    let eigthCards = cardTwelve.slice(0, 8)
+    eigthCards = this.shuffleCards(eigthCards)
+    this.addCard(eigthCards)
+  }
+
+  twoByTwo() {
+    let fourCards = cardTwelve.slice(0, 4)
+    fourCards = this.shuffleCards(fourCards)
+    this.addCard(fourCards)
+  }
   // winner()
 
   // rule ()
 
-  fourByTwo () {
-    // cut array till its only 8 elements left 
-    // repead what you did in fourByfour
-    for(let i=0; i < 8; i++) {
-      let card = document.createElement('my-card')
-      this.shadowRoot.appendChild( card )
-    }
-  }
+}
 
-  twoByTwo () {
-    for(let i=0; i < 4; i++) {
-      let card = document.createElement('my-card')
-      this.shadowRoot.appendChild( card )
-    }
-  }
-
-
-  addCard() {
-    cardsdb.forEach(db => {
-      let card = document.createElement('my-card')
-      card.src = card.getAttribute('cardFront')
-      let img = document.createElement('img')
-      img.src = db.cardFront
-      img.id = db.id
-      card.shadowRoot.appendChild(img)
-      this.shadowRoot.appendChild( card )
-    })
-  }
- }
-
- window.customElements.define('memory-game', memoryGame);
+window.customElements.define('memory-game', memoryGame);
