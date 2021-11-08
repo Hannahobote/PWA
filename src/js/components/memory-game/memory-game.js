@@ -17,9 +17,9 @@ template.innerHTML = `
 
   <div class="board"> </div>
 
-  <button > 4x4 </button>
-  <button > 4x2 </button>
-  <button> 2x2 </button>
+  <button id="four" > 4x4 </button>
+  <button id="fourTwo" > 4x2 </button>
+  <button id="two"> 2x2 </button>
 
 
  `
@@ -36,10 +36,25 @@ class memoryGame extends HTMLElement {
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
 
-    this.twoByTwo()
-
+      this.fourBtn = this.shadowRoot.querySelector('#four')
+      this.fourTwoBtn = this.shadowRoot.querySelector('#fourTwo')
+      this.twoBtn = this.shadowRoot.querySelector('#two')
     // Get elemens here 
     // TODO: Maybee you need to define some default values here
+  }
+
+  
+  connectedCallback() {
+    this.fourBtn.addEventListener('click', () => this.fourByFour())
+    this.fourTwoBtn.addEventListener('click', () => this.fourByTwo())
+    this.twoBtn.addEventListener('click', () => this.twoByTwo() )
+  }
+
+  
+  disconnectedCallback() {
+    this.fourBtn.removeEventListener('click', () => this.fourByFour())
+    this.fourTwoBtn.removeEventListener('click', () => this.fourByTwo())
+    this.twoBtn.removeEventListener('click', () => this.twoByTwo() )
   }
 
   shuffleCards(cardsArr) {
@@ -52,14 +67,14 @@ class memoryGame extends HTMLElement {
       card.setFrontImg(data.cardFront)
       card.id = data.id
       this.shadowRoot.querySelector('.board').appendChild(card)
-      //this.shadowRoot.appendChild(card)
-
     })
   }
+
 
   fourByFour() {
     let cardsData = this.shuffleCards([...cardTwelve])
     this.addCard(cardsData)
+    this.removeBtn()
   }
 
   fourByTwo() {
@@ -73,9 +88,18 @@ class memoryGame extends HTMLElement {
     fourCards = this.shuffleCards(fourCards)
     this.addCard(fourCards)
   }
+
+  /**
+   * Remove buttons from screen if layout is chosen.
+   */
+  removeBtn() {
+    this.fourBtn.remove()
+    this.fourTwoBtn.remove()
+    this.twoBtn.remove()
+  }
   // winner()
 
-  // rule ()
+  // rule () // get the card on the bourd and match the id to each other.
 
 }
 
