@@ -82,6 +82,11 @@ class myCard extends HTMLElement {
     this.cardBack.classList.toggle('hidden')
   }
 
+  hideCard() {
+    this.cardFront.style.backgroundColor = 'white'
+    this.cardBack.style.backgroundColor = 'white'
+  }
+
   toggleCardFront() {
    this.cardFront.classList.toggle('hidden')
   }

@@ -96,26 +96,27 @@ class memoryGame extends HTMLElement {
     if(this.clickedCard.length == 2) {
       // check if cards match 
       if(this.clickedCard[0] == this.clickedCard[1]){
-        console.log('its a match')
-        // make matched cards white 
-         //this.clickedCardEl[0].classList.add('hidden') 
-         //this.clickedCardEl[1].classList.add('hidden')
-        this.clickedCardEl[0].remove()
-        this.clickedCardEl[1].remove()
-        // reset array
-        this.clickedCard.length = 0 
-        this.clickedCardEl.length = 0
+        setTimeout(() =>{
+          console.log('its a match')
+          // make matched cards white 
+           this.clickedCardEl[0].hideCard()
+           this.clickedCardEl[1].hideCard()
+           
+          //this.clickedCardEl[0].remove()
+          //this.clickedCardEl[1].remove()
+          // reset array
+          this.clickedCard.length = 0 
+          this.clickedCardEl.length = 0
+        }, 1000)
       } else {
-        console.log('not a macth')
         // set timer and flip back card 
         // set cusoem event, that the card should litsen to, then flip back on its own
         setTimeout(() =>{
-          this.dispatchEvent(new window.CustomEvent('notMatch', { detail: { match: true } }))
-         // this.clickedCardEl[0]
-         // this.clickedCardEl[1]
+          this.clickedCardEl[0].flip()
+          this.clickedCardEl[1].flip()
           this.clickedCard.length = 0
           this.clickedCardEl.length = 0
-        }, 500)
+        }, 1000)
 
       }
     }
@@ -137,18 +138,6 @@ class memoryGame extends HTMLElement {
 
   }
 
-  flipCardBack(card1, card2) {
-    console.log(card1,card2)
-    card1.toggleCardFront()
-    card2.toggleCardBack()
-  }
-
-  removeCardsOnMatch(card1, card2) {
-    card1.style.visibility = 'hidden'
-    card2.style.visibility = 'hidden'
-  }
-
-
   connectedCallback() {
     this.fourByFourBtn.addEventListener('click', () => {
       this.createFourByFourCards()
@@ -158,7 +147,7 @@ class memoryGame extends HTMLElement {
     })
 
     this.fourByTwoBtn.addEventListener('click', () => {
-      this.createTwoByTwoCards()
+      this.createFourByTwoCards()
       this.hideButtons()
       this.addEventToCards()
     })
@@ -172,7 +161,24 @@ class memoryGame extends HTMLElement {
 
 
   disconnectedCallback() {
+    this.fourByFourBtn.removeEventListener('click', () => {
+      this.createFourByFourCards()
+      this.hideButtons()
+      this.addEventToCards()
+     
+    })
 
+    this.fourByTwoBtn.removeEventListener('click', () => {
+      this.createFourByTwoCards()
+      this.hideButtons()
+      this.addEventToCards()
+    })
+
+    this.twoByTwoBtn.removeEventListener('click', () => {
+      this.createTwoByTwoCards()
+      this.hideButtons()
+      this.addEventToCards()
+    })
   }
 
 
