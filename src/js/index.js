@@ -1,6 +1,7 @@
 // imports all the components. Later on only use this one file and import it to html to get acces to the components ?
 import './components/my-window/my-window.js'
 import './components/memory-game/memory-game.js'
+import './components/memory-game/memory-game2.js'
 
 /**
  * Define template.
@@ -17,7 +18,8 @@ import './components/memory-game/memory-game.js'
  </style>
  
  <my-window></my-window>
- <memory-game></memory-game>
+ <!--<memory-game></memory-game>-->
+ <memory-gametwo></memory-gametwo>
  
  `
 

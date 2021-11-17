@@ -1,5 +1,6 @@
 import { cardTwelve } from '../my-card/cards-database.js'
 import '../my-card/my-card.js'
+import '../my-card/my-cardV2.js'
 
 /**
  * Define template.
@@ -12,9 +13,23 @@ template.innerHTML = `
     display: grid;
     grid-template-columns: repeat(4, auto);
   }
+
+  .match {
+  background-image: url("bgdesert.jpg");
+  height: 100px;
+  width: 100px;
+  }
+
+  .red {
+    background-color: red;
+  }
+
+  [data-color=purple] {
+    background-color:purple 
+  }
  
   </style>
-
+  <my-cardtwo data-color="purple"> </my-cardtwo>
   <div class="board"> </div>
 
   <button id="four" > 4x4 </button>
@@ -39,6 +54,8 @@ class memoryGame extends HTMLElement {
     this.fourBtn = this.shadowRoot.querySelector('#four')
     this.fourTwoBtn = this.shadowRoot.querySelector('#fourTwo')
     this.twoBtn = this.shadowRoot.querySelector('#two')
+    this.cardFront = this.shadowRoot.querySelector('my-cardtwo')
+    console.log(this.cardFront)
   }
 
 
@@ -111,6 +128,9 @@ class memoryGame extends HTMLElement {
   eventOnCard(cards) {
     let result = []
     cards.forEach( card => {
+      card.addEventListener('cardClicked', evt => {
+        console.log(evt.detail)
+      })
       card.addEventListener('click', evt => {
         result.push(evt.target.id)
         console.log(result)
@@ -123,7 +143,7 @@ class memoryGame extends HTMLElement {
 
   // rule () // get the card on the bourd and match the id to each other.
 
-  // match() if match, remove from board, else flip cards back.
+  // match() if match, remove (make pic white) from board, else flip cards back.
   match(cardsToMatch) {
     if(cardsToMatch.length < 2 ) {
       console.log('no cards to match')
@@ -135,13 +155,15 @@ class memoryGame extends HTMLElement {
         console.log(cardsToMatch)
       } else {
         console.log('not a match')
-
         cardsToMatch.length = 0
         console.log(cardsToMatch)
       }
       
     }
   }
+
+  // click on card
+  // its a macth, turn card white
 
 }
 

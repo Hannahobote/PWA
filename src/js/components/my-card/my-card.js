@@ -54,20 +54,6 @@ class myCard extends HTMLElement {
     // TODO: Maybee you need to define some default values here
   }
 
-  /**
- * Called when observed attribute(s) changes.
- *
- * @param {string} name - The attribute's name.
- * @param {*} oldValue - The old value.
- * @param {*} newValue - The new value.
- */
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'boardsize') {
-      return false
-    }
-  }
-
-
   flipCard() {
     // turn card 
     // hide back
@@ -89,8 +75,17 @@ class myCard extends HTMLElement {
 
 
   connectedCallback() {
-    this.cardBack.addEventListener('click', () => this.flipCard())
-    this.cardFront.addEventListener('click', () => this.flipCard())
+    // if card has been clicked, send costume event
+
+    this.cardBack.addEventListener('click', () => {
+      this.flipCard()
+      this.dispatchEvent(new window.CustomEvent('cardClicked', { detail: { clicked: true, id: this.cardBack.id } }))
+    })
+
+    this.cardFront.addEventListener('click', () => {
+      this.flipCard()
+      this.dispatchEvent(new window.CustomEvent('cardClicked', { detail: { clicked: true, id: this.cardFront.id } }))
+    })
   }
 
   disconnectedCallback() {
