@@ -48,6 +48,7 @@ class memoryGame extends HTMLElement {
     this.fourByTwoBtn = this.shadowRoot.querySelector('#fourTwo')
     this.twoByTwoBtn = this.shadowRoot.querySelector('#two')
     this.clickedCard = []
+    this.clickedCardEl = []
   }
 
   shuffleColorData(colorData) {
@@ -89,22 +90,32 @@ class memoryGame extends HTMLElement {
 
   isMatch(e) {
     this.clickedCard.push(e.target.dataset.color)
+    this.clickedCardEl.push(e.target)
+    
     // check if there are 2 clicked cards.
     if(this.clickedCard.length == 2) {
       // check if cards match 
       if(this.clickedCard[0] == this.clickedCard[1]){
         console.log('its a match')
         // make matched cards white 
-        console.log()
-        this.clickedCard[0] = 'white'
-        this.clickedCard[1]= 'white'
+         //this.clickedCardEl[0].classList.add('hidden') 
+         //this.clickedCardEl[1].classList.add('hidden')
+        this.clickedCardEl[0].remove()
+        this.clickedCardEl[1].remove()
         // reset array
         this.clickedCard.length = 0 
+        this.clickedCardEl.length = 0
       } else {
         console.log('not a macth')
         // set timer and flip back card 
-        // reset array
-        this.clickedCard.length = 0
+        // set cusoem event, that the card should litsen to, then flip back on its own
+        setTimeout(() =>{
+          this.dispatchEvent(new window.CustomEvent('notMatch', { detail: { match: true } }))
+         // this.clickedCardEl[0]
+         // this.clickedCardEl[1]
+          this.clickedCard.length = 0
+          this.clickedCardEl.length = 0
+        }, 500)
 
       }
     }
@@ -122,12 +133,19 @@ class memoryGame extends HTMLElement {
     console.log(myCardEl)
   }
 
-  isNotMatch() {
+  winner() {
 
   }
 
-  flipCardBack() {
-    // set interval timer
+  flipCardBack(card1, card2) {
+    console.log(card1,card2)
+    card1.toggleCardFront()
+    card2.toggleCardBack()
+  }
+
+  removeCardsOnMatch(card1, card2) {
+    card1.style.visibility = 'hidden'
+    card2.style.visibility = 'hidden'
   }
 
 
@@ -142,11 +160,13 @@ class memoryGame extends HTMLElement {
     this.fourByTwoBtn.addEventListener('click', () => {
       this.createTwoByTwoCards()
       this.hideButtons()
+      this.addEventToCards()
     })
 
     this.twoByTwoBtn.addEventListener('click', () => {
       this.createTwoByTwoCards()
       this.hideButtons()
+      this.addEventToCards()
     })
   }
 

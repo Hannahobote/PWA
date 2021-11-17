@@ -65,6 +65,9 @@ class myCard extends HTMLElement {
       this.flip()
       console.log('you clicked me')
     })
+
+    this.addEventListener('notMatch', this.toggleCardBack.bind(this))
+
   }
 
 
@@ -76,6 +79,14 @@ class myCard extends HTMLElement {
     // by default the front is set to hidden, so toggle it too show
     this.cardFront.classList.toggle('show')
     // by default the back is set to visible, so toggle it
+    this.cardBack.classList.toggle('hidden')
+  }
+
+  toggleCardFront() {
+   this.cardFront.classList.toggle('hidden')
+  }
+
+  toggleCardBack() {
     this.cardBack.classList.toggle('hidden')
   }
 
