@@ -51,21 +51,21 @@ class myCard extends HTMLElement {
       .appendChild(template.content.cloneNode(true))
     this.cardFront = this.shadowRoot.querySelector('.cardFront')
     this.cardBack = this.shadowRoot.querySelector('.cardBack')
-    this.isflipped = false;
+    this.isflipped = false
     this.setColor()
   }
 
   connectedCallback() {
     this.cardBack.addEventListener('click', () => {
       this.flip()
-      this.cardBack.onClick = null
       console.log('you clicked me')
+      this.cardBack.disabled = true
     })
-
+    
     // remove event listener from the front card, it will flip by it self, if NOT matched ???
     this.cardFront.addEventListener('click', () => {
       this.flip()
-      this.cardFront.onClick = null
+      this.cardFront.disabled = true
       console.log('you clicked me')
     })
   }
@@ -85,10 +85,17 @@ class myCard extends HTMLElement {
   }
 
   flip() {
+     // this.cardBack.disabled = false
+     // this.cardFront.disabled = false
+    
     // by default the front is set to hidden, so toggle it too show
     this.cardFront.classList.toggle('show')
     // by default the back is set to visible, so toggle it
     this.cardBack.classList.toggle('hidden')
+    this.cardBack.disabled = false
+    this.cardFront.disabled = false
+
+    // when pressed card, you can press it again, but when it flips, you can press it again
   }
 
   hideCard() {

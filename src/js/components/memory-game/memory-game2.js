@@ -43,7 +43,7 @@ class memoryGame extends HTMLElement {
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
 
-    this.colorData = ['red', 'red', 'blue', 'blue', 'pink', 'pink', 'purple', 'purple', 'green', 'green', 'yellow', 'yellow'] // change to pastel colors :)
+    this.colorData = ['#FFDFCC', '#FFDFCC', '#C3EEFA', '#C3EEFA', '#0771B8', '#0771B8', '#D8D4FF', '#D8D4FF', ' #D4FFDC', ' #D4FFDC', '#FFFED4', '#FFFED4']
     this.fourByFourBtn = this.shadowRoot.querySelector('#four')
     this.fourByTwoBtn = this.shadowRoot.querySelector('#fourTwo')
     this.twoByTwoBtn = this.shadowRoot.querySelector('#two')
@@ -94,25 +94,25 @@ class memoryGame extends HTMLElement {
   isMatch(e) {
     this.clickedCard.push(e.target.dataset.color)
     this.clickedCardEl.push(e.target)
-
+    //bug: if you click a card twice, it will match with itself
     // check if there are 2 clicked cards.
     if (this.clickedCard.length == 2) {
       // check if cards match 
-      if (this.clickedCard[0] == this.clickedCard[1]) {
+      // card should not match wiht itself, so id should NOT be mathing
+      if (this.clickedCard[0] == this.clickedCard[1] && this.clickedCardEl[0].id !== this.clickedCardEl[1].id ) {
         setTimeout(() => {
           console.log('its a match')
+          console.log(this.clickedCardEl[0].id, this.clickedCardEl[1].id)
           // make matched cards white 
           this.clickedCardEl[0].hideCard()
           this.clickedCardEl[1].hideCard()
-
-          //this.clickedCardEl[0].remove()
-          //this.clickedCardEl[1].remove()
           // reset array
           this.clickedCard.length = 0
           this.clickedCardEl.length = 0
-         
+          
         }, 500)
       } else {
+        console.log(this.clickedCardEl[0].id, this.clickedCardEl[1].id)
         // set timer and flip back card 
         // set cusoem event, that the card should litsen to, then flip back on its own
         setTimeout(() => {
@@ -128,12 +128,17 @@ class memoryGame extends HTMLElement {
 
   addEventToCards() {
     let myCardEl = Array.from(this.shadowRoot.querySelectorAll('my-cardtwo'))
-    // add event listener to every card in DOM
+    // add event listener to every card in DOM + add id
+    let i = 0;
     myCardEl.forEach(card => {
+      // add id
+      card.id= i;
+      // add event
       card.addEventListener('click', e => {
         // check if its a match
         this.isMatch(e)
       })
+      i++
     })
     console.log(myCardEl)
   }
