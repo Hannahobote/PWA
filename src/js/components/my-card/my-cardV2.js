@@ -33,8 +33,8 @@ template.innerHTML = `
   </style>
 
   <div class="card">
-   <div class="cardBack"></div>
-   <div class="cardFront"></div>
+   <button class="cardBack"></button>
+   <button class="cardFront"></button>
   </div> 
   `
 
@@ -58,21 +58,30 @@ class myCard extends HTMLElement {
   connectedCallback() {
     this.cardBack.addEventListener('click', () => {
       this.flip()
+      this.cardBack.onClick = null
       console.log('you clicked me')
     })
 
+    // remove event listener from the front card, it will flip by it self, if NOT matched ???
     this.cardFront.addEventListener('click', () => {
       this.flip()
+      this.cardFront.onClick = null
       console.log('you clicked me')
     })
-
-    this.addEventListener('notMatch', this.toggleCardBack.bind(this))
-
   }
 
 
   disconnectedCallback() {
+    this.cardBack.removeEventListener('click', () => {
+      this.flip()
+      console.log('you clicked me')
+    })
 
+    // remove event listener from the front card, it will flip by it self, if NOT matched ???
+    this.cardFront.removeEventListener('click', () => {
+      this.flip()
+      console.log('you clicked me')
+    })
   }
 
   flip() {
@@ -83,16 +92,10 @@ class myCard extends HTMLElement {
   }
 
   hideCard() {
-    this.cardFront.style.backgroundColor = 'white'
+    this.cardBack.disabled = true
+    this.cardFront.disabled = true
     this.cardBack.style.backgroundColor = 'white'
-  }
-
-  toggleCardFront() {
-   this.cardFront.classList.toggle('hidden')
-  }
-
-  toggleCardBack() {
-    this.cardBack.classList.toggle('hidden')
+    this.cardFront.style.backgroundColor = 'white'
   }
 
   setColor() {

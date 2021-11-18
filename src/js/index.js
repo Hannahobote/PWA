@@ -17,9 +17,11 @@ import './components/memory-game/memory-game2.js'
  
  </style>
  
- <my-window></my-window>
- <!--<memory-game></memory-game>-->
+ <my-window>
+
+ </my-window>
  <memory-gametwo></memory-gametwo>
+ <!--<memory-game></memory-game>-->
  
  `
 

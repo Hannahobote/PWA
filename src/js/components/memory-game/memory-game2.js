@@ -48,6 +48,9 @@ class memoryGame extends HTMLElement {
     this.fourByTwoBtn = this.shadowRoot.querySelector('#fourTwo')
     this.twoByTwoBtn = this.shadowRoot.querySelector('#two')
     this.clickedCard = []
+    /**
+    * Holds the card element woth its methods.
+    */
     this.clickedCardEl = []
   }
 
@@ -91,32 +94,33 @@ class memoryGame extends HTMLElement {
   isMatch(e) {
     this.clickedCard.push(e.target.dataset.color)
     this.clickedCardEl.push(e.target)
-    
+
     // check if there are 2 clicked cards.
-    if(this.clickedCard.length == 2) {
+    if (this.clickedCard.length == 2) {
       // check if cards match 
-      if(this.clickedCard[0] == this.clickedCard[1]){
-        setTimeout(() =>{
+      if (this.clickedCard[0] == this.clickedCard[1]) {
+        setTimeout(() => {
           console.log('its a match')
           // make matched cards white 
-           this.clickedCardEl[0].hideCard()
-           this.clickedCardEl[1].hideCard()
-           
+          this.clickedCardEl[0].hideCard()
+          this.clickedCardEl[1].hideCard()
+
           //this.clickedCardEl[0].remove()
           //this.clickedCardEl[1].remove()
           // reset array
-          this.clickedCard.length = 0 
+          this.clickedCard.length = 0
           this.clickedCardEl.length = 0
-        }, 1000)
+         
+        }, 500)
       } else {
         // set timer and flip back card 
         // set cusoem event, that the card should litsen to, then flip back on its own
-        setTimeout(() =>{
+        setTimeout(() => {
           this.clickedCardEl[0].flip()
           this.clickedCardEl[1].flip()
           this.clickedCard.length = 0
           this.clickedCardEl.length = 0
-        }, 1000)
+        }, 500)
 
       }
     }
@@ -139,20 +143,23 @@ class memoryGame extends HTMLElement {
   }
 
   connectedCallback() {
-    this.fourByFourBtn.addEventListener('click', () => {
+    this.fourByFourBtn.addEventListener('click', (e) => {
+      e.preventDefault()
       this.createFourByFourCards()
       this.hideButtons()
       this.addEventToCards()
-     
+
     })
 
-    this.fourByTwoBtn.addEventListener('click', () => {
+    this.fourByTwoBtn.addEventListener('click', (e) => {
+      e.preventDefault()
       this.createFourByTwoCards()
       this.hideButtons()
       this.addEventToCards()
     })
 
-    this.twoByTwoBtn.addEventListener('click', () => {
+    this.twoByTwoBtn.addEventListener('click', (e) => {
+      e.preventDefault()
       this.createTwoByTwoCards()
       this.hideButtons()
       this.addEventToCards()
@@ -161,20 +168,23 @@ class memoryGame extends HTMLElement {
 
 
   disconnectedCallback() {
-    this.fourByFourBtn.removeEventListener('click', () => {
+    this.fourByFourBtn.removeEventListener('click', (e) => {
+      e.preventDefault()
       this.createFourByFourCards()
       this.hideButtons()
       this.addEventToCards()
-     
+
     })
 
-    this.fourByTwoBtn.removeEventListener('click', () => {
+    this.fourByTwoBtn.removeEventListener('click', (e) => {
+      e.preventDefault()
       this.createFourByTwoCards()
       this.hideButtons()
       this.addEventToCards()
     })
 
-    this.twoByTwoBtn.removeEventListener('click', () => {
+    this.twoByTwoBtn.removeEventListener('click', (e) => {
+      e.preventDefault()
       this.createTwoByTwoCards()
       this.hideButtons()
       this.addEventToCards()
