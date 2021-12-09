@@ -1,7 +1,8 @@
 // imports all the components. Later on only use this one file and import it to html to get acces to the components ?
 import './components/my-window/my-window.js'
-import './components/memory-game/memory-game.js'
+// import './components/memory-game/memory-game.js'
 import './components/memory-game/memory-game2.js'
+import './components/my-dock/my-dock.js'
 
 /**
  * Define template.
@@ -14,14 +15,23 @@ import './components/memory-game/memory-game2.js'
    font-family: Arial, Helvetica, sans-serif;
  }
 
+  my-dock {
+  position: fixed;
+   bottom: 0;
+  
+ }
  
  </style>
  
  <my-window>
+   <memory-gametwo></memory-gametwo>
+   </my-window>
 
- </my-window>
- <memory-gametwo></memory-gametwo>
- <!--<memory-game></memory-game>-->
+   <my-dock>
+    <div slot="item1"> my </div>
+    <div slot="item2"> apps </div>
+    <div slot="item3"> is here </div>
+   </my-dock>
  
  `
 

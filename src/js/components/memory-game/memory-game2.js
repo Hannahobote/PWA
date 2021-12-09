@@ -162,11 +162,13 @@ class memoryGame extends HTMLElement {
     console.log(myCardEl)
   }
 
+  /**
+   * If all cards are matched, play again
+   */
   winner() {
     if(this.allCardsMatched()){
       this.resetGame()
     }
-    // if all cards are disabled, player wins and gets to blay again
   }
 
   allCardsMatched(){
