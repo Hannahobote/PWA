@@ -11,6 +11,8 @@ template.innerHTML = `
    width: 100px;
    position: absolute;
    background-color: #eee;
+   border: 0px solid;
+
   }
  
   .cardFront {
@@ -18,7 +20,7 @@ template.innerHTML = `
    width: 100px;
    visibility: hidden;
    position: relative;
-   /*background-color: red;*/
+   border: 0px solid;
   }
 
   .hidden {
@@ -61,8 +63,7 @@ class myCard extends HTMLElement {
       console.log('you clicked me')
       this.cardBack.disabled = true
     })
-    
-    // remove event listener from the front card, it will flip by it self, if NOT matched ???
+
     this.cardFront.addEventListener('click', () => {
       this.flip()
       this.cardFront.disabled = true
@@ -77,7 +78,6 @@ class myCard extends HTMLElement {
       console.log('you clicked me')
     })
 
-    // remove event listener from the front card, it will flip by it self, if NOT matched ???
     this.cardFront.removeEventListener('click', () => {
       this.flip()
       console.log('you clicked me')
@@ -85,17 +85,12 @@ class myCard extends HTMLElement {
   }
 
   flip() {
-     // this.cardBack.disabled = false
-     // this.cardFront.disabled = false
-    
     // by default the front is set to hidden, so toggle it too show
     this.cardFront.classList.toggle('show')
     // by default the back is set to visible, so toggle it
     this.cardBack.classList.toggle('hidden')
     this.cardBack.disabled = false
     this.cardFront.disabled = false
-
-    // when pressed card, you can press it again, but when it flips, you can press it again
   }
 
   hideCard() {

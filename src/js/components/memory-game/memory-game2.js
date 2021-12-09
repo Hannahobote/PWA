@@ -20,10 +20,22 @@ template.innerHTML = `
     visibility: visible;
   }
 
+  .winnermsg {
+    height:500px;
+    width: 750px;
+    background-color: green;
+    font-size: 100px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    display:none;
+  }
+
  
   </style>
 
   <div class="board"> </div>
+  <div class="winnermsg">YOU WON!</div>
 
   <button id="four" > 4x4 </button>
   <button id="fourTwo" > 4x2 </button>
@@ -43,15 +55,19 @@ class memoryGame extends HTMLElement {
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
 
-    this.colorData = ['#FFDFCC', '#FFDFCC', '#C3EEFA', '#C3EEFA', '#0771B8', '#0771B8', '#D8D4FF', '#D8D4FF', ' #D4FFDC', ' #D4FFDC', '#FFFED4', '#FFFED4']
+    this.colorData = ['blue', 'blue', 'green', 'green', 'yellow', 'yellow', 'purple', 'purple', 'orange', 'orange', 'red', 'red', 'pink', 'pink', 'black', 'black']
     this.fourByFourBtn = this.shadowRoot.querySelector('#four')
     this.fourByTwoBtn = this.shadowRoot.querySelector('#fourTwo')
     this.twoByTwoBtn = this.shadowRoot.querySelector('#two')
+    this.winnerMsg= this.shadowRoot.querySelector('.winnermsg')
+    /**
+     * Contains the colors of the clicked cards.
+     */
     this.clickedCard = []
     /**
-    * Holds the card element woth its methods.
+    * Holds the card element with its methods.
     */
-    this.clickedCardEl = []
+    this.clickedCardElement = []
   }
 
   shuffleColorData(colorData) {
@@ -93,35 +109,38 @@ class memoryGame extends HTMLElement {
 
   isMatch(e) {
     this.clickedCard.push(e.target.dataset.color)
-    this.clickedCardEl.push(e.target)
+    this.clickedCardElement.push(e.target)
     //bug: if you click a card twice, it will match with itself
     // check if there are 2 clicked cards.
     if (this.clickedCard.length == 2) {
       // check if cards match 
       // card should not match wiht itself, so id should NOT be mathing
-      if (this.clickedCard[0] == this.clickedCard[1] && this.clickedCardEl[0].id !== this.clickedCardEl[1].id ) {
+      if (this.clickedCard[0] == this.clickedCard[1] && this.clickedCardElement[0].id !== this.clickedCardElement[1].id) {
         setTimeout(() => {
           console.log('its a match')
-          console.log(this.clickedCardEl[0].id, this.clickedCardEl[1].id)
+          console.log(this.clickedCardElement[0].id, this.clickedCardElement[1].id)
           // make matched cards white 
-          this.clickedCardEl[0].hideCard()
-          this.clickedCardEl[1].hideCard()
+          this.clickedCardElement[0].hideCard()
+          this.clickedCardElement[1].hideCard()
+          // check them as matched
+          //console.log(this.clickedCardElement[0], this.clickedCardElement[1])
+          this.clickedCardElement[0].classList.add("matched")
+          this.clickedCardElement[1].classList.add("matched")
           // reset array
           this.clickedCard.length = 0
-          this.clickedCardEl.length = 0
-          
+          this.clickedCardElement.length = 0
+          this.winner()
         }, 500)
       } else {
-        console.log(this.clickedCardEl[0].id, this.clickedCardEl[1].id)
+        console.log(this.clickedCardElement[0].id, this.clickedCardElement[1].id)
         // set timer and flip back card 
         // set cusoem event, that the card should litsen to, then flip back on its own
         setTimeout(() => {
-          this.clickedCardEl[0].flip()
-          this.clickedCardEl[1].flip()
+          this.clickedCardElement[0].flip()
+          this.clickedCardElement[1].flip()
           this.clickedCard.length = 0
-          this.clickedCardEl.length = 0
+          this.clickedCardElement.length = 0
         }, 500)
-
       }
     }
   }
@@ -132,7 +151,7 @@ class memoryGame extends HTMLElement {
     let i = 0;
     myCardEl.forEach(card => {
       // add id
-      card.id= i;
+      card.id = i;
       // add event
       card.addEventListener('click', e => {
         // check if its a match
@@ -144,7 +163,30 @@ class memoryGame extends HTMLElement {
   }
 
   winner() {
+    if(this.allCardsMatched()){
+      this.resetGame()
+    }
+    // if all cards are disabled, player wins and gets to blay again
+  }
 
+  allCardsMatched(){
+   let myCardEl = Array.from(this.shadowRoot.querySelectorAll('my-cardtwo'))
+   let isMatched = myCardEl.every(card => card.classList.contains('matched'))
+   console.log('all cards are matched: ', isMatched)
+   return isMatched
+  }
+
+  resetGame(){
+    // remove all cards fom DOM
+   let cards = this.shadowRoot.querySelectorAll('my-cardtwo')
+   console.log(cards)
+    cards.forEach(card => {
+      card.remove()
+    })
+    alert('you Won, plaay again?')
+    // show buttons
+    this.hideButtons()
+    console.log('reset game')
   }
 
   connectedCallback() {
