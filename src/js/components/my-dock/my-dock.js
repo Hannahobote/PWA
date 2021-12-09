@@ -16,7 +16,7 @@
  .dock {
    background-color:#eee;
    width: 1500px;
-   height:75px;
+   height:750px;
    background-color: #eee;
    display:flex;
    justify-content: centre;
@@ -45,8 +45,7 @@
     /**
      * The entire window element
      */
-    this.dock=this.shadowRoot.querySelector('.dock')
-    
+    this.dock=this.shadowRoot.querySelector('.dock')    
   }
 
  }

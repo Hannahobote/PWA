@@ -7,3 +7,5 @@ when icon is pressed, window should pop up
 
 #### Dock.js
 should contain icons 
+
+The icon should be on the dock. The icon should include the windwow, that incluted the app.

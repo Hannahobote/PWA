@@ -4,6 +4,7 @@ import './components/my-window/my-window.js'
 import './components/memory-game/memory-game2.js'
 import './components/my-dock/my-dock.js'
 import './components/my-icon/my-icon.js'
+import './components/my-icon/my-icon2.js'
 
 /**
  * Define template.
@@ -12,9 +13,6 @@ import './components/my-icon/my-icon.js'
  template.innerHTML = `
 
  <style>
- body {
-   font-family: Arial, Helvetica, sans-serif;
- }
 
   my-dock {
   position: fixed;
@@ -28,14 +26,38 @@ import './components/my-icon/my-icon.js'
  
  </style>
  
- <my-window>
+  <!--<my-window>
    <memory-gametwo></memory-gametwo>
-   </my-window>
+  </my-window> -->
 
    <my-dock>
-    <div slot="item1">  <my-icon> <img src="https://img.icons8.com/ios/250/000000/google-logo.png"></my-icon> </div>
-    <div slot="item2"> <my-icon> <img src="https://img.icons8.com/ios/250/000000/dashboard.png"></my-icon> </div>
-    <div slot="item3"><my-icon> <img src="https://img.icons8.com/ios/250/000000/color-palette.png"></my-icon> </div>
+    
+   <div slot="item1">  
+    <my-icon> 
+      <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div>
+        <div slot="app"> 
+          <my-window>
+            <memory-gametwo></memory-gametwo>
+          </my-window>  
+       </div>
+      </my-icon> 
+    </div>
+
+    <div slot="item2">  
+    <my-icon> 
+      <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div>
+        <div slot="app"> 
+          <my-window>
+            <memory-gametwo></memory-gametwo>
+          </my-window>  
+       </div>
+      </my-icon> 
+    </div>
+
+    <div slot="item3">  
+    <my-icon2> <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> </my-icon2>
+    </div>
+
    </my-dock>
  `
 
@@ -52,6 +74,10 @@ import './components/my-icon/my-icon.js'
       .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
     // Get elemens here 
     // TODO: Maybee you need to define some default values here
+
+   console.log( this.shadowRoot.querySelector('my-icon2'))
+   this.shadowRoot.querySelector('my-icon2').createApp('memory-gametwo')
+
   }
  }
 

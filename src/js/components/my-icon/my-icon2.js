@@ -1,3 +1,6 @@
+import '../my-window/my-window.js'
+import '../memory-game/memory-game2.js'
+
 /**
  * Define template.
  */
@@ -21,7 +24,7 @@
     </div>
 
     <div class="app"> 
-      <div><slot class="app2" name="app"/></div> 
+    
     </div>
 
   </div>
@@ -30,44 +33,35 @@
  /**
   * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
   */
- class myIcon extends HTMLElement {
+ class myIcon2 extends HTMLElement {
   constructor() {
     super()
-
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
+
     this.icon=this.shadowRoot.querySelector('.container')
-    this.app=this.shadowRoot.querySelector('.app')
-    this.app2=this.shadowRoot.querySelector('.app2')
-    this.window=this.app
-    this.app.classList.toggle('show')
-    console.log(this.app2)
-    console.log(this.shadowRoot.querySelector('app'))
+    //this.shadowRoot.querySelector('.app').style.display='none'
   }
 
   
-    showApp() {
-      this.app.classList.toggle('show')
-    }
+  createApp(appName) {
+    let app = document.createElement(`${appName}`)
+    let window = document.createElement('my-window')
+    window.appendChild(app)
+    this.shadowRoot.querySelector('.app').appendChild(window)
+    console.log('created')
+  }
 
   connectedCallback() {
-   this.icon.addEventListener('click',()=> {
-      console.log('click')
-      this.showApp()
-    })
+    this.icon.addEventListener('click', this.createApp())
   }
 
   disconnectedCallback() {
-    this.icon.removeEventListener('click',()=> {
-      console.log('click')
-      this.showApp()
-    })
+    this.icon.removeEventListener('click', this.createApp())
   }
 
  }
 
- window.customElements.define('my-icon', myIcon);
- 
- 
+ window.customElements.define('my-icon2', myIcon2);

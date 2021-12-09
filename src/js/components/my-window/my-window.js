@@ -62,6 +62,9 @@
     // TODO: Maybee you need to define some default values here
   }
 
+  showWindow () {
+    
+  }
   connectedCallback() {
     this.deleteBtn.addEventListener('click', () => {
       this.window.classList.toggle('show')
