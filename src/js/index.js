@@ -3,6 +3,7 @@ import './components/my-window/my-window.js'
 // import './components/memory-game/memory-game.js'
 import './components/memory-game/memory-game2.js'
 import './components/my-dock/my-dock.js'
+import './components/my-icon/my-icon.js'
 
 /**
  * Define template.
@@ -17,8 +18,12 @@ import './components/my-dock/my-dock.js'
 
   my-dock {
   position: fixed;
-   bottom: 0;
-  
+  bottom: 0;
+ }
+
+ img {
+   width: 50px;
+   height: 50px;
  }
  
  </style>
@@ -28,11 +33,10 @@ import './components/my-dock/my-dock.js'
    </my-window>
 
    <my-dock>
-    <div slot="item1"> my </div>
-    <div slot="item2"> apps </div>
-    <div slot="item3"> is here </div>
+    <div slot="item1">  <my-icon> <img src="https://img.icons8.com/ios/250/000000/google-logo.png"></my-icon> </div>
+    <div slot="item2"> <my-icon> <img src="https://img.icons8.com/ios/250/000000/dashboard.png"></my-icon> </div>
+    <div slot="item3"><my-icon> <img src="https://img.icons8.com/ios/250/000000/color-palette.png"></my-icon> </div>
    </my-dock>
- 
  `
 
  /**

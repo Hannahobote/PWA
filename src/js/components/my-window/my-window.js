@@ -33,7 +33,7 @@
      <button class="delete">X</button>
     </div>
     <div class="window"> enter app here 
-      <div><slot/></div></div>
+      <div><slot/></div>
  </div>
  
  `
