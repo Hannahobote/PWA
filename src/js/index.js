@@ -29,7 +29,7 @@ import './components/my-icon/my-icon2.js'
   <!--<my-window>
    <memory-gametwo></memory-gametwo>
   </my-window> -->
-
+  
    <my-dock>
 
     <div slot="item1">  
