@@ -60,6 +60,10 @@
      this.controllPanel=this.shadowRoot.querySelector('.controllPanel')
     // Get elemens here 
     // TODO: Maybee you need to define some default values here
+    this.pos1= 0
+    this.pos2= 0
+    this.pos3= 0
+    this.pos4= 0
   }
 
   showWindow () {
@@ -76,6 +80,48 @@
       this.window.classList.toggle('show')
     })
   }
+
+  dragElement(element) {
+    // https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_draggable
+    // check if element exist 
+    if(this.window) {
+      this.window.onmousedown=this.dragMouseDown.bind(this)
+    } else{
+      element.onmousedown=this.dragMouseDown.bind(this)
+    }
+  }
+
+  dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    this.pos3 = e.clientX;
+    this.pos4 = e.clientY;
+    document.onmouseup = this.closeDragElement();
+    // call a function whenever the cursor moves:
+    document.onmousemove = this.elementDrag(e);
+  }
+
+
+  elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    this.pos1 = this.pos3 - e.clientX;
+    this.pos2 = this.pos4 - e.clientY;
+    this.pos3 = e.clientX;
+    this.pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - this.pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - this.pos1) + "px";
+  }
+
+  closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+
  }
 
  window.customElements.define('my-window', myWindow);

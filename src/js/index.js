@@ -31,12 +31,13 @@ import './components/my-icon/my-icon2.js'
   </my-window> -->
 
    <my-dock>
-     
+
     <div slot="item1">  
       <my-icon2 class="icon1" > 
           <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> 
           <div class="app1" slot="app"></div>
       </my-icon2>
+      <div class="app12"></div>
     </div>
 
     <div slot="item2">  
@@ -73,6 +74,8 @@ import './components/my-icon/my-icon2.js'
    this.iconOne = this.shadowRoot.querySelector('.icon1')
    this.iconTwo = this.shadowRoot.querySelector('.icon2')
    this.iconThree = this.shadowRoot.querySelector('.icon3')
+   this.allIconElement= Array.from(this.shadowRoot.querySelectorAll('my-icon2'))
+   console.log(this.allIconElement)
   }
 
   createApp() {
@@ -83,7 +86,7 @@ import './components/my-icon/my-icon2.js'
     let window = document.createElement('my-window')
     let memoryApp = document.createElement('memory-gametwo')
     window.appendChild(memoryApp)
-    this.shadowRoot.querySelector('.app1').appendChild(window)
+    this.shadowRoot.querySelector('.app12').appendChild(window)
   }
 
   createSubApp1(){ 
@@ -98,15 +101,14 @@ import './components/my-icon/my-icon2.js'
   }
   
   connectedCallback() {
-    this.iconOne.addEventListener('click', () => {
+    this.allIconElement[0].addEventListener('click',() => {
       this.createMemoryApp()
       console.log('click!')
-    })
-
-    this.iconTwo.addEventListener('click', () => {
-      this.createSubApp1()
+    } )
+    /*this.iconOne.addEventListener('click', () => {
+      this.createMemoryApp()
       console.log('click!')
-    })
+    })*/
     
   }
 
