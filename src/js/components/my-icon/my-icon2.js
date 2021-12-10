@@ -1,8 +1,5 @@
-import '../my-window/my-window.js'
-import '../memory-game/memory-game2.js'
-
 /**
- * Define template.
+ * Define template. 
  */
  const template = document.createElement('template')
  template.innerHTML = `
@@ -18,13 +15,12 @@ import '../memory-game/memory-game2.js'
 
  </style>
   <div class="container"> 
-
     <div class="image"> 
       <div><slot name="image"/></div> <!--takes in an image! document later!-->
     </div>
 
     <div class="app"> 
-    
+      <div><slot class="app2" name="app"/></div> 
     </div>
 
   </div>
@@ -42,24 +38,14 @@ import '../memory-game/memory-game2.js'
       .appendChild(template.content.cloneNode(true))
 
     this.icon=this.shadowRoot.querySelector('.container')
-    //this.shadowRoot.querySelector('.app').style.display='none'
-  }
-
-  
-  createApp(appName) {
-    let app = document.createElement(`${appName}`)
-    let window = document.createElement('my-window')
-    window.appendChild(app)
-    this.shadowRoot.querySelector('.app').appendChild(window)
-    console.log('created')
   }
 
   connectedCallback() {
-    this.icon.addEventListener('click', this.createApp())
+ 
   }
 
   disconnectedCallback() {
-    this.icon.removeEventListener('click', this.createApp())
+    
   }
 
  }

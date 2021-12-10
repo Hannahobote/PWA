@@ -1,5 +1,5 @@
 /**
- * Define template.
+ * Can take in three applications.
  */
  const template = document.createElement('template')
  template.innerHTML = `

@@ -31,31 +31,26 @@ import './components/my-icon/my-icon2.js'
   </my-window> -->
 
    <my-dock>
-    
-   <div slot="item1">  
-    <my-icon> 
-      <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div>
-        <div slot="app"> 
-          <my-window>
-            <memory-gametwo></memory-gametwo>
-          </my-window>  
-       </div>
-      </my-icon> 
+     
+    <div slot="item1">  
+      <my-icon2 class="icon1" > 
+          <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> 
+          <div class="app1" slot="app"></div>
+      </my-icon2>
     </div>
 
     <div slot="item2">  
-    <my-icon> 
-      <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div>
-        <div slot="app"> 
-          <my-window>
-            <memory-gametwo></memory-gametwo>
-          </my-window>  
-       </div>
-      </my-icon> 
+      <my-icon2 class="icon2"> 
+          <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> 
+          <div class="app2" slot="app"></div>
+      </my-icon2>
     </div>
 
     <div slot="item3">  
-    <my-icon2> <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> </my-icon2>
+      <my-icon2 class="icon3"> 
+            <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> 
+            <div class="app3" slot="app"></div>
+      </my-icon2>
     </div>
 
    </my-dock>
@@ -75,10 +70,52 @@ import './components/my-icon/my-icon2.js'
     // Get elemens here 
     // TODO: Maybee you need to define some default values here
 
-   console.log( this.shadowRoot.querySelector('my-icon2'))
-   this.shadowRoot.querySelector('my-icon2').createApp('memory-gametwo')
-
+   this.iconOne = this.shadowRoot.querySelector('.icon1')
+   this.iconTwo = this.shadowRoot.querySelector('.icon2')
+   this.iconThree = this.shadowRoot.querySelector('.icon3')
   }
+
+  createApp() {
+    this.iconElement.createApp('memory-gametwo')
+  }
+  
+  createMemoryApp(){ 
+    let window = document.createElement('my-window')
+    let memoryApp = document.createElement('memory-gametwo')
+    window.appendChild(memoryApp)
+    this.shadowRoot.querySelector('.app1').appendChild(window)
+  }
+
+  createSubApp1(){ 
+    console.log('created!')
+  }
+
+  createSubApp2(){ 
+    console.log('created!')
+  }
+
+  addEventToIcons(){
+  }
+  
+  connectedCallback() {
+    this.iconOne.addEventListener('click', () => {
+      this.createMemoryApp()
+      console.log('click!')
+    })
+
+    this.iconTwo.addEventListener('click', () => {
+      this.createSubApp1()
+      console.log('click!')
+    })
+    
+  }
+
+  disconnectedCallback() {
+    this.allIconElement.forEach(icon => icon.removeEventListener('click', this.createAppForIcon()))
+    
+  }
+
+
  }
 
  window.customElements.define('my-app', myApp);

@@ -1,5 +1,5 @@
 /**
- * Define template.
+ * Can take in One app of choice.
  */
  const template = document.createElement('template')
  template.innerHTML = `
@@ -63,7 +63,7 @@
   }
 
   showWindow () {
-    
+
   }
   connectedCallback() {
     this.deleteBtn.addEventListener('click', () => {
