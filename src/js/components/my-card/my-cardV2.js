@@ -44,7 +44,10 @@ template.innerHTML = `
  * Runs the app.
  */
 class myCard extends HTMLElement {
-  constructor() {
+  /**
+   *
+   */
+  constructor () {
     super()
 
     // Attach a shadow DOM tree to this element and
@@ -57,7 +60,10 @@ class myCard extends HTMLElement {
     this.setColor()
   }
 
-  connectedCallback() {
+  /**
+   *
+   */
+  connectedCallback () {
     this.cardBack.addEventListener('click', () => {
       this.flip()
       console.log('you clicked me')
@@ -71,8 +77,10 @@ class myCard extends HTMLElement {
     })
   }
 
-
-  disconnectedCallback() {
+  /**
+   *
+   */
+  disconnectedCallback () {
     this.cardBack.removeEventListener('click', () => {
       this.flip()
       console.log('you clicked me')
@@ -84,7 +92,10 @@ class myCard extends HTMLElement {
     })
   }
 
-  flip() {
+  /**
+   *
+   */
+  flip () {
     // by default the front is set to hidden, so toggle it too show
     this.cardFront.classList.toggle('show')
     // by default the back is set to visible, so toggle it
@@ -93,16 +104,22 @@ class myCard extends HTMLElement {
     this.cardFront.disabled = false
   }
 
-  hideCard() {
+  /**
+   *
+   */
+  hideCard () {
     this.cardBack.disabled = true
     this.cardFront.disabled = true
     this.cardBack.style.backgroundColor = 'white'
     this.cardFront.style.backgroundColor = 'white'
   }
 
-  setColor() {
+  /**
+   *
+   */
+  setColor () {
     this.shadowRoot.querySelector('.cardFront').style.backgroundColor = this.dataset.color
   }
 }
 
-window.customElements.define('my-cardtwo', myCard);
+window.customElements.define('my-cardtwo', myCard)

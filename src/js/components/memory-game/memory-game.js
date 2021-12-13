@@ -43,7 +43,10 @@ template.innerHTML = `
  * Runs the app.
  */
 class memoryGame extends HTMLElement {
-  constructor() {
+  /**
+   *
+   */
+  constructor () {
     super()
 
     // Attach a shadow DOM tree to this element and
@@ -58,52 +61,70 @@ class memoryGame extends HTMLElement {
     console.log(this.cardFront)
   }
 
-
-  connectedCallback() {
+  /**
+   *
+   */
+  connectedCallback () {
     this.fourBtn.addEventListener('click', () => this.fourByFour())
     this.fourTwoBtn.addEventListener('click', () => {
       this.fourByTwo()
       this.eventOnCard(this.getAllCards())
     })
     this.twoBtn.addEventListener('click', () => this.twoByTwo())
-    //this.allCards.addEventListener('click', this.match())
+    // this.allCards.addEventListener('click', this.match())
   }
 
-
-  disconnectedCallback() {
+  /**
+   *
+   */
+  disconnectedCallback () {
     this.fourBtn.removeEventListener('click', () => this.fourByFour())
     this.fourTwoBtn.removeEventListener('click', () => this.fourByTwo())
     this.twoBtn.removeEventListener('click', () => this.twoByTwo())
   }
 
-  shuffleCards(cardsArr) {
-    return cardsArr.sort((a, b) => 0.5 - Math.random());
+  /**
+   * @param cardsArr
+   */
+  shuffleCards (cardsArr) {
+    return cardsArr.sort((a, b) => 0.5 - Math.random())
   }
 
-  addCard(cardsData) {
+  /**
+   * @param cardsData
+   */
+  addCard (cardsData) {
     cardsData.forEach(data => {
-      let card = document.createElement('my-card')
+      const card = document.createElement('my-card')
       card.setFrontImg(data.cardFront)
       card.id = data.id
       this.shadowRoot.querySelector('.board').appendChild(card)
     })
   }
 
-
-  fourByFour() {
-    let cardsData = this.shuffleCards([...cardTwelve])
+  /**
+   *
+   */
+  fourByFour () {
+    const cardsData = this.shuffleCards([...cardTwelve])
     this.addCard(cardsData)
     this.removeBtn()
   }
 
-  fourByTwo() {
+  /**
+   *
+   */
+  fourByTwo () {
     let eigthCards = cardTwelve.slice(0, 8)
     eigthCards = this.shuffleCards(eigthCards)
     this.addCard(eigthCards)
     this.removeBtn()
   }
 
-  twoByTwo() {
+  /**
+   *
+   */
+  twoByTwo () {
     let fourCards = cardTwelve.slice(0, 4)
     fourCards = this.shuffleCards(fourCards)
     this.addCard(fourCards)
@@ -113,21 +134,27 @@ class memoryGame extends HTMLElement {
   /**
    * Remove buttons from screen if layout is chosen.
    */
-  removeBtn() {
+  removeBtn () {
     this.fourBtn.remove()
     this.fourTwoBtn.remove()
     this.twoBtn.remove()
   }
 
+  /**
+   *
+   */
   getAllCards () {
-    let allCards = this.shadowRoot.querySelectorAll('my-card')
-    let arrayCards = Array.from(allCards)
+    const allCards = this.shadowRoot.querySelectorAll('my-card')
+    const arrayCards = Array.from(allCards)
     return arrayCards
   }
 
-  eventOnCard(cards) {
-    let result = []
-    cards.forEach( card => {
+  /**
+   * @param cards
+   */
+  eventOnCard (cards) {
+    const result = []
+    cards.forEach(card => {
       card.addEventListener('cardClicked', evt => {
         console.log(evt.detail)
       })
@@ -144,12 +171,15 @@ class memoryGame extends HTMLElement {
   // rule () // get the card on the bourd and match the id to each other.
 
   // match() if match, remove (make pic white) from board, else flip cards back.
-  match(cardsToMatch) {
-    if(cardsToMatch.length < 2 ) {
+  /**
+   * @param cardsToMatch
+   */
+  match (cardsToMatch) {
+    if (cardsToMatch.length < 2) {
       console.log('no cards to match')
-    } 
-    if(cardsToMatch.length === 2 ) {
-      if(cardsToMatch.every( (val, i, arr) => val === arr[0] )) {
+    }
+    if (cardsToMatch.length === 2) {
+      if (cardsToMatch.every((val, i, arr) => val === arr[0])) {
         console.log('a match')
         cardsToMatch.length = 0
         console.log(cardsToMatch)
@@ -158,13 +188,11 @@ class memoryGame extends HTMLElement {
         cardsToMatch.length = 0
         console.log(cardsToMatch)
       }
-      
     }
   }
 
   // click on card
   // its a macth, turn card white
-
 }
 
-window.customElements.define('memory-game', memoryGame);
+window.customElements.define('memory-game', memoryGame)

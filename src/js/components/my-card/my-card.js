@@ -38,24 +38,30 @@ template.innerHTML = `
  * Runs the app.
  */
 class myCard extends HTMLElement {
-  constructor() {
+  /**
+   *
+   */
+  constructor () {
     super()
 
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
-    //this.shadowRoot.querySelector('#cardFront').src = this.getAttribute('cardfront')
+    // this.shadowRoot.querySelector('#cardFront').src = this.getAttribute('cardfront')
     this.cardFront = this.shadowRoot.querySelector('#cardFront')
     this.cardBack = this.shadowRoot.querySelector('#cardBack')
 
-    this.showFront = false;
-    // Get elemens here 
+    this.showFront = false
+    // Get elemens here
     // TODO: Maybee you need to define some default values here
   }
 
-  flipCard() {
-    // turn card 
+  /**
+   *
+   */
+  flipCard () {
+    // turn card
     // hide back
     this.showFront = !this.showFront
     if (this.showFront) {
@@ -67,14 +73,18 @@ class myCard extends HTMLElement {
     }
   }
 
-  setFrontImg(src) {
-    //this.cardFront.src = src
+  /**
+   * @param src
+   */
+  setFrontImg (src) {
+    // this.cardFront.src = src
     this.shadowRoot.querySelector('#cardFront').src = src
   }
 
-
-
-  connectedCallback() {
+  /**
+   *
+   */
+  connectedCallback () {
     // if card has been clicked, send costume event
 
     this.cardBack.addEventListener('click', () => {
@@ -88,11 +98,14 @@ class myCard extends HTMLElement {
     })
   }
 
-  disconnectedCallback() {
+  /**
+   *
+   */
+  disconnectedCallback () {
 
   }
 
   // if cardFront== true, then remove card.
 }
 
-window.customElements.define('my-card', myCard);
+window.customElements.define('my-card', myCard)

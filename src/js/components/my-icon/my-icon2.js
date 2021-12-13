@@ -1,8 +1,8 @@
 /**
- * Define template. 
+ * Define template.
  */
- const template = document.createElement('template')
- template.innerHTML = `
+const template = document.createElement('template')
+template.innerHTML = `
 
  <style>
  body {
@@ -23,28 +23,36 @@
   </div>
  `
 
- /**
-  * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
-  */
- class myIcon2 extends HTMLElement {
-  constructor() {
+/**
+ * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
+ */
+class myIcon2 extends HTMLElement {
+  /**
+   *
+   */
+  constructor () {
     super()
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
 
-    this.icon=this.shadowRoot.querySelector('.container')
+    this.icon = this.shadowRoot.querySelector('.container')
   }
 
-  connectedCallback() {
- 
+  /**
+   *
+   */
+  connectedCallback () {
+
   }
 
-  disconnectedCallback() {
-    
+  /**
+   *
+   */
+  disconnectedCallback () {
+
   }
+}
 
- }
-
- window.customElements.define('my-icon2', myIcon2);
+window.customElements.define('my-icon2', myIcon2)

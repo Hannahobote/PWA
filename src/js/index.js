@@ -9,8 +9,8 @@ import './components/my-icon/my-icon2.js'
 /**
  * Define template.
  */
- const template = document.createElement('template') 
- template.innerHTML = `
+const template = document.createElement('template')
+template.innerHTML = `
 
  <style>
 
@@ -52,48 +52,69 @@ import './components/my-icon/my-icon2.js'
    </my-dock>
  `
 
- /**
-  * Runs the app.
-  */
- class myApp extends HTMLElement {
-  constructor() {
+/**
+ * Runs the app.
+ */
+class myApp extends HTMLElement {
+  /**
+   *
+   */
+  constructor () {
     super()
 
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
-    // Get elemens here 
+    // Get elemens here
     // TODO: Maybee you need to define some default values here
 
-   this.iconOne = this.shadowRoot.querySelector('.icon1')
-   this.iconTwo = this.shadowRoot.querySelector('.icon2')
-   this.iconThree = this.shadowRoot.querySelector('.icon3')
+    this.iconOne = this.shadowRoot.querySelector('.icon1')
+    this.iconTwo = this.shadowRoot.querySelector('.icon2')
+    this.iconThree = this.shadowRoot.querySelector('.icon3')
   }
 
-  createApp() {
+  /**
+   *
+   */
+  createApp () {
     this.iconElement.createApp('memory-gametwo')
   }
-  
-  createMemoryApp(){ 
-    let window = document.createElement('my-window')
-    let memoryApp = document.createElement('memory-gametwo')
+
+  /**
+   *
+   */
+  createMemoryApp () {
+    const window = document.createElement('my-window')
+    const memoryApp = document.createElement('memory-gametwo')
     window.appendChild(memoryApp)
     this.shadowRoot.querySelector('#app1').appendChild(window)
   }
 
-  createSubApp1(){ 
+  /**
+   *
+   */
+  createSubApp1 () {
     console.log('created!')
   }
 
-  createSubApp2(){ 
+  /**
+   *
+   */
+  createSubApp2 () {
     console.log('created!')
   }
 
-  addEventToIcons(){
+  /**
+   *
+   */
+  addEventToIcons () {
   }
-  
-  connectedCallback() {
+
+  /**
+   *
+   */
+  connectedCallback () {
     this.iconOne.addEventListener('click', () => {
       this.createMemoryApp()
       console.log('click!')
@@ -104,19 +125,18 @@ import './components/my-icon/my-icon2.js'
       console.log('click!')
     })
 
-    
     this.iconThree.addEventListener('click', () => {
       this.createMemoryApp()
       console.log('click!')
     })
-    
   }
 
-  disconnectedCallback() {
-    
+  /**
+   *
+   */
+  disconnectedCallback () {
+
   }
+}
 
-
- }
-
- window.customElements.define('my-app', myApp);
+window.customElements.define('my-app', myApp)

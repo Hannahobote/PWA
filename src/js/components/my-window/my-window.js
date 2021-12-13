@@ -1,8 +1,8 @@
 /**
  * Can take in One app of choice.
  */
- const template = document.createElement('template')
- template.innerHTML = `
+const template = document.createElement('template')
+template.innerHTML = `
 
  <style>
  body {
@@ -42,77 +42,95 @@
   </div>
  `
 
- /**
-  * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
-  */
- class myWindow extends HTMLElement {
-  constructor() {
+/**
+ * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
+ */
+class myWindow extends HTMLElement {
+  /**
+   *
+   */
+  constructor () {
     super()
 
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
-    this.deleteBtn=this.shadowRoot.querySelector('.delete')
+    this.deleteBtn = this.shadowRoot.querySelector('.delete')
     /**
      * The entire window element
      */
     this.container = this.shadowRoot.querySelector('.container')
     /**
-     * The controll panel ontop of the window 
+     * The controll panel ontop of the window
      */
     this.controllPanel = this.shadowRoot.querySelector('.controllPanel')
 
     this.window = this.shadowRoot.querySelector('.window')
     console.log(this.container)
-    this.dragValue;
+    this.dragValue
     this.move()
   }
 
+  /**
+   *
+   */
   showWindow () {
 
   }
 
-  move() {
+  /**
+   *
+   */
+  move () {
     // https://www.youtube.com/watch?v=cNh-jFcCGKU
-    let element = this.container
-    element.style.position = "absolute"
+    const element = this.container
+    element.style.position = 'absolute'
+    /**
+     *
+     */
     element.onmousedown = () => {
       this.dragValue = element
     }
 
+    /**
+     * @param e
+     */
     document.onmouseup = (e) => {
-      this.dragValue = null;
+      this.dragValue = null
     }
 
+    /**
+     * @param e
+     */
     document.onmousemove = (e) => {
-      let x = e.pageX
-      let y = e.pageY
+      const x = e.pageX
+      const y = e.pageY
 
       this.dragValue.style.left = x + 'px'
       this.dragValue.style.top = y + 'px'
     }
   }
 
-
-
-  connectedCallback() {
+  /**
+   *
+   */
+  connectedCallback () {
     this.deleteBtn.addEventListener('click', () => {
-     // this.container.classList.toggle('show')
-     this.remove()
+      // this.container.classList.toggle('show')
+      this.remove()
     })
   }
 
-
-   disconnectedCallback() {
-     this.deleteBtn.removeEventListener('click', () => {
-       //this.container.classList.toggle('show')
-       this.remove()
-     })
+  /**
+   *
+   */
+  disconnectedCallback () {
+    this.deleteBtn.removeEventListener('click', () => {
+      // this.container.classList.toggle('show')
+      this.remove()
+    })
   }
+}
 
- }
-
- window.customElements.define('my-window', myWindow);
- 
- 
+window.customElements.define('my-window', myWindow)

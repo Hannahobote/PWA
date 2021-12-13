@@ -1,8 +1,8 @@
 /**
  * Can take in three applications.
  */
- const template = document.createElement('template')
- template.innerHTML = `
+const template = document.createElement('template')
+template.innerHTML = `
 
  <style>
  body {
@@ -31,11 +31,14 @@
  
  `
 
- /**
-  * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
-  */
- class myDock extends HTMLElement {
-  constructor() {
+/**
+ * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
+ */
+class myDock extends HTMLElement {
+  /**
+   *
+   */
+  constructor () {
     super()
 
     // Attach a shadow DOM tree to this element and
@@ -45,11 +48,8 @@
     /**
      * The entire window element
      */
-    this.dock=this.shadowRoot.querySelector('.dock')    
+    this.dock = this.shadowRoot.querySelector('.dock')
   }
+}
 
- }
-
- window.customElements.define('my-dock', myDock);
- 
- 
+window.customElements.define('my-dock', myDock)
