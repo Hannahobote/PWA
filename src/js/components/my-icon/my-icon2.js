@@ -13,7 +13,9 @@
    display:none;
  }
 
+
  </style>
+
   <div class="container"> 
     <div class="image"> 
       <div><slot name="image"/></div> <!--takes in an image! document later!-->

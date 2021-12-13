@@ -113,7 +113,6 @@ import './components/my-icon/my-icon2.js'
   }
 
   disconnectedCallback() {
-    this.allIconElement.forEach(icon => icon.removeEventListener('click', this.createAppForIcon()))
     
   }
 
