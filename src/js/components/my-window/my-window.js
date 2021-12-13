@@ -24,18 +24,22 @@
    width: 1000px;
    height:30px;
  }
- 
+
+ .item:active {
+      background-color: rgba(168, 218, 220, 1.00);
+    }
+
  </style>
-  <div class="container">
+  <div class="container" id="container">
     <div class="controllPanel"> 
-     <button>-</button>   
-     <button>||</button>
-     <button class="delete">X</button>
+      <button>-</button>
+      <button>||</button>
+      <button class="delete">X</button>
     </div>
-    <div class="window"> enter app here 
+   <div class="window">
       <div><slot/></div>
- </div>
- 
+   </div>
+  </div>
  `
 
  /**
@@ -53,82 +57,57 @@
     /**
      * The entire window element
      */
-    this.window=this.shadowRoot.querySelector('.container')
+    this.container = this.shadowRoot.querySelector('.container')
     /**
      * The controll panel ontop of the window 
      */
-     this.controllPanel=this.shadowRoot.querySelector('.controllPanel')
-    this.dragElement(this.window)
-    this.pos1= 0
-    this.pos2= 0
-    this.pos3= 0
-    this.pos4= 0
+    this.controllPanel = this.shadowRoot.querySelector('.controllPanel')
+
+    this.window = this.shadowRoot.querySelector('.window')
+    console.log(this.container)
+    this.dragValue;
+    this.move()
   }
 
   showWindow () {
 
   }
-  connectedCallback() {
-    this.deleteBtn.addEventListener('click', () => {
-      this.window.classList.toggle('show')
-    })
-  }
 
-  disconnectedCallback() {
-    this.deleteBtn.removeEventListener('click', () => {
-      this.window.classList.toggle('show')
-    })
-  }
+  move() {
+    // https://www.youtube.com/watch?v=cNh-jFcCGKU
+    let element = this.container
+    element.style.position = "absolute"
+    element.onmousedown = () => {
+      this.dragValue = element
+    }
 
-  dragElement(element) {
-    // https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_draggable
-    // check if element exist 
-    if(this.window) {
-      this.window.addEventListener('mousedown', (e) => {
-        console.log('we move!')
-        e = e || window.event;
-        e.preventDefault();
-        // get the mouse cursor position at startup:
-        this.pos3 = e.clientX;
-        this.pos4 = e.clientY;
-        document.onmouseup = this.closeDragElement();
-        // call a function whenever the cursor moves:
-        document.onmousemove = this.elementDrag(e, this.window);
-      })
-    } else{
-      element.addEventListener('mousedown', (e) => {
-        console.log('we move!')
-        e = e || window.event;
-        e.preventDefault();
-        // get the mouse cursor position at startup:
-        this.pos3 = e.clientX;
-        this.pos4 = e.clientY;
-        document.onmouseup = this.closeDragElement();
-        // call a function whenever the cursor moves:
-        document.onmousemove = this.elementDrag(e, element);
-      })
+    document.onmouseup = (e) => {
+      this.dragValue = null;
+    }
+
+    document.onmousemove = (e) => {
+      let x = e.pageX
+      let y = e.pageY
+
+      this.dragValue.style.left = x + 'px'
+      this.dragValue.style.top = y + 'px'
     }
   }
 
-  elementDrag(e, element){
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position: = pos3 - e.clientX;
-    this.pos2 = this.pos4 - e.clientY;
-    this.pos3 = e.clientX;
-    this.pos4 = e.clientY;
-    // set the element's new position:
-    element.style.top = (element.offsetTop - this.pos2) + "px";
-    element.style.left = (element.offsetLeft) + "px";
+
+
+  connectedCallback() {
+    this.deleteBtn.addEventListener('click', () => {
+      this.container.classList.toggle('show')
+    })
   }
 
-   
-  closeDragElement(){
-    /* stop moving when mouse button is released:*/
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
 
+   disconnectedCallback() {
+     this.deleteBtn.removeEventListener('click', () => {
+       this.container.classList.toggle('show')
+     })
+  }
 
  }
 
