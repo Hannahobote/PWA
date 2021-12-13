@@ -16,7 +16,7 @@
  .dock {
    background-color:#eee;
    width: 1500px;
-   height:750px;
+   height:75px;
    background-color: #eee;
    display:flex;
    justify-content: centre;

@@ -98,14 +98,16 @@
 
   connectedCallback() {
     this.deleteBtn.addEventListener('click', () => {
-      this.container.classList.toggle('show')
+     // this.container.classList.toggle('show')
+     this.remove()
     })
   }
 
 
    disconnectedCallback() {
      this.deleteBtn.removeEventListener('click', () => {
-       this.container.classList.toggle('show')
+       //this.container.classList.toggle('show')
+       this.remove()
      })
   }
 

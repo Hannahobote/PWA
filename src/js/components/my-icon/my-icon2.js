@@ -18,11 +18,6 @@
     <div class="image"> 
       <div><slot name="image"/></div> <!--takes in an image! document later!-->
     </div>
-
-    <div class="app"> 
-      <div><slot class="app2" name="app"/></div> 
-    </div>
-
   </div>
  `
 
