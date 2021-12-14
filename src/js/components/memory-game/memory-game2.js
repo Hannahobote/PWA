@@ -23,12 +23,11 @@ template.innerHTML = `
   
   </style>
 
-  <div class="board"> </div>
-  <h3> player attempts:  <span id="attempts"> </span></h3> 
+<div class="board"> </div>
+<h3> player attempts:  <span id="attempts"> </span></h3> 
   <button id="four" > 4x4 </button>
   <button id="fourTwo" > 4x2 </button>
   <button id="two"> 2x2 </button>
-
  `
 
 /**
@@ -57,6 +56,10 @@ class memoryGame extends HTMLElement {
     // if playes do NOT match, increse counter
     this.playerAttempts = 0
     this.playerAttemptsElement = this.shadowRoot.querySelector('#attempts')
+    this.timer = null
+    this.startTime = 0
+    this.startTimer()
+    console.log(this.timer)
   }
 
   /**
@@ -212,6 +215,22 @@ class memoryGame extends HTMLElement {
     this.playerAttemptsElement.innerHTML = 0
     this.playerAttempts = 0
     console.log('reset game')
+  }
+
+  startTimer () {
+    this.timer = setInterval(() => {
+      this.startTime += 1
+    }, 1000)
+  }
+
+  stopTimer () {
+    clearInterval(this.timer)
+    this.saveTimer()
+  }
+
+  saveTimer() {
+    const duration = this.startTime
+    return this.startTime
   }
 
   /**
