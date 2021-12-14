@@ -14,7 +14,7 @@ template.innerHTML = `
   position: absolute;
   top: 0;
  }
- 
+
  img {
    width: 50px;
    height: 50px;
@@ -99,12 +99,6 @@ class myApp extends HTMLElement {
    */
   createSubApp2 () {
     console.log('created!')
-  }
-
-  /**
-   *
-   */
-  addEventToIcons () {
   }
 
   /**

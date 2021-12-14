@@ -13,7 +13,7 @@ template.innerHTML = `
  .window{
    width: 1000px;
    height:500px;
-   background-color: grey;
+   background-color: #dad4a4;
  }
 
  .container {

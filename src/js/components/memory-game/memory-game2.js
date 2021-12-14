@@ -20,23 +20,11 @@ template.innerHTML = `
     visibility: visible;
   }
 
-  .winnermsg {
-    height:500px;
-    width: 750px;
-    background-color: green;
-    font-size: 100px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    display:none;
-  }
-
- 
+  
   </style>
 
   <div class="board"> </div>
-  <div class="winnermsg">YOU WON!</div>
-
+  <h3> player attempts:  <span id="attempts"> </span></h3> 
   <button id="four" > 4x4 </button>
   <button id="fourTwo" > 4x2 </button>
   <button id="two"> 2x2 </button>
@@ -62,15 +50,13 @@ class memoryGame extends HTMLElement {
     this.fourByFourBtn = this.shadowRoot.querySelector('#four')
     this.fourByTwoBtn = this.shadowRoot.querySelector('#fourTwo')
     this.twoByTwoBtn = this.shadowRoot.querySelector('#two')
-    this.winnerMsg = this.shadowRoot.querySelector('.winnermsg')
-    /**
-     * Contains the colors of the clicked cards.
-     */
+    // Contains the colors of the clicked cards.
     this.clickedCard = []
-    /**
-     * Holds the card element with its methods.
-     */
+    // Holds the card element with its methods.
     this.clickedCardElement = []
+    // if playes do NOT match, increse counter
+    this.playerAttempts = 0
+    this.playerAttemptsElement = this.shadowRoot.querySelector('#attempts')
   }
 
   /**
@@ -136,10 +122,10 @@ class memoryGame extends HTMLElement {
     this.clickedCardElement.push(e.target)
     // bug: if you click a card twice, it will match with itself
     // check if there are 2 clicked cards.
-    if (this.clickedCard.length == 2) {
+    if (this.clickedCard.length === 2) {
       // check if cards match
       // card should not match wiht itself, so id should NOT be mathing
-      if (this.clickedCard[0] == this.clickedCard[1] && this.clickedCardElement[0].id !== this.clickedCardElement[1].id) {
+      if (this.clickedCard[0] === this.clickedCard[1] && this.clickedCardElement[0].id !== this.clickedCardElement[1].id) {
         setTimeout(() => {
           console.log('its a match')
           console.log(this.clickedCardElement[0].id, this.clickedCardElement[1].id)
@@ -157,6 +143,8 @@ class memoryGame extends HTMLElement {
         }, 500)
       } else {
         console.log(this.clickedCardElement[0].id, this.clickedCardElement[1].id)
+        this.playerAttempts++
+        this.playerAttemptsElement.innerHTML = this.playerAttempts
         // set timer and flip back card
         // set cusoem event, that the card should litsen to, then flip back on its own
         setTimeout(() => {
@@ -218,9 +206,11 @@ class memoryGame extends HTMLElement {
     cards.forEach(card => {
       card.remove()
     })
-    alert('you Won, plaay again?')
+    alert(`you Won with ${this.playerAttempts} attempts, play again?`)
     // show buttons
     this.hideButtons()
+    this.playerAttemptsElement.innerHTML = 0
+    this.playerAttempts = 0
     console.log('reset game')
   }
 
