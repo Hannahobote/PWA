@@ -13,7 +13,6 @@ const template = document.createElement('template')
 template.innerHTML = `
 
  <style>
-
   my-dock {
   position: fixed;
   top: 0;

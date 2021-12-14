@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/check-examples */
 /**
  * Can take in One app of choice.
  */
@@ -15,6 +16,10 @@ template.innerHTML = `
    background-color: grey;
  }
 
+ .container {
+  position: absolute;
+ }
+
  .show {
    display:none;
  }
@@ -25,13 +30,14 @@ template.innerHTML = `
    height:30px;
  }
 
- .item:active {
-      background-color: rgba(168, 218, 220, 1.00);
-    }
+ .active {
+  border: 2px solid black;
+  outline: blue solid 10px;
+ }
 
  </style>
-  <div class="container" id="container">
-    <div class="controllPanel"> 
+  <div class="container" id="mydiv">
+    <div class="controllPanel" id="mydivheader"> 
       <button>-</button>
       <button>||</button>
       <button class="delete">X</button>
@@ -41,9 +47,8 @@ template.innerHTML = `
    </div>
   </div>
  `
-
 /**
- * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
+ *
  */
 class myWindow extends HTMLElement {
   /**
@@ -55,60 +60,71 @@ class myWindow extends HTMLElement {
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
-      .appendChild(template.content.cloneNode(true)) // viktigt !!!!.
+      .appendChild(template.content.cloneNode(true))
     this.deleteBtn = this.shadowRoot.querySelector('.delete')
-    /**
-     * The entire window element
-     */
     this.container = this.shadowRoot.querySelector('.container')
-    /**
-     * The controll panel ontop of the window
-     */
     this.controllPanel = this.shadowRoot.querySelector('.controllPanel')
-
     this.window = this.shadowRoot.querySelector('.window')
-    console.log(this.container)
-    this.dragValue
-    this.move()
+    this.dragValue = null
+    this.dragElement(this.container)
   }
 
+  // eslint-disable-next-line jsdoc/check-examples
   /**
+   * Make element Dragabble.
    *
+   * @param elmnt the element to drag, in this case the container.
    */
-  showWindow () {
+  dragElement (elmnt) {
+    /**
+     * @param e
+     */
+    const dragMouseDown = (e) => {
+      // copied from: https://www.w3schools.com/howto/howto_js_draggable.asp
+      e = e || window.event
+      e.preventDefault()
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX
+      pos4 = e.clientY
+      document.onmouseup = closeDragElement
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag
+      this.container.classList.add('active')
+    }
 
-  }
+    let pos1 = 0; let pos2 = 0; let pos3 = 0; let pos4 = 0
+    if (document.getElementById(elmnt.id + 'header')) {
+      // if present, the header is where you move the DIV from:
+      document.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown
+    } else {
+      // otherwise, move the DIV from anywhere inside the DIV:
+      elmnt.onmousedown = dragMouseDown
+    }
 
-  /**
-   *
-   */
-  move () {
-    // https://www.youtube.com/watch?v=cNh-jFcCGKU
-    const element = this.container
-    element.style.position = 'absolute'
+    /**
+     * @param e
+     */
+    const elementDrag = (e) => {
+      e = e || window.event
+      e.preventDefault()
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX
+      pos2 = pos4 - e.clientY
+      pos3 = e.clientX
+      pos4 = e.clientY
+      // set the element's new position:
+      elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
+    }
+
     /**
      *
      */
-    element.onmousedown = () => {
-      this.dragValue = element
-    }
-
-    /**
-     * @param e
-     */
-    document.onmouseup = (e) => {
-      this.dragValue = null
-    }
-
-    /**
-     * @param e
-     */
-    document.onmousemove = (e) => {
-      const x = e.pageX
-      const y = e.pageY
-
-      this.dragValue.style.left = x + 'px'
-      this.dragValue.style.top = y + 'px'
+    const closeDragElement = () => {
+      // stop moving when mouse button is released:
+      document.onmouseup = null
+      document.onmousemove = null
+      this.container.classList.remove('active')
     }
   }
 
