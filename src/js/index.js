@@ -6,18 +6,15 @@ import './components/my-dock/my-dock.js'
 import './components/my-icon/my-icon.js'
 import './components/my-icon/my-icon2.js'
 
-/**
- * Define template.
- */
 const template = document.createElement('template')
 template.innerHTML = `
 
  <style>
   my-dock {
-  position: fixed;
+  position: absolute;
   top: 0;
  }
-
+ 
  img {
    width: 50px;
    height: 50px;
