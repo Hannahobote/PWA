@@ -24,7 +24,8 @@ template.innerHTML = `
   </style>
 
 <div class="board"> </div>
-<h3> player attempts:  <span id="attempts"> </span></h3> 
+<h3> attemps:  <span id="attempts"> </span></h3> 
+<h3> timer:  <span id="time-left"> </span></h3> 
   <button id="four" > 4x4 </button>
   <button id="fourTwo" > 4x2 </button>
   <button id="two"> 2x2 </button>
@@ -56,10 +57,11 @@ class memoryGame extends HTMLElement {
     // if playes do NOT match, increse counter
     this.playerAttempts = 0
     this.playerAttemptsElement = this.shadowRoot.querySelector('#attempts')
-    this.timer = null
-    this.startTime = 0
-    this.startTimer()
-    console.log(this.timer)
+    this._timeDisplay = this.shadowRoot.querySelector('#time-left')
+    this._timeLeft = 0
+    this._defaultTime = 20
+    this._timer = 20
+    this._totalTimeScore = 0
   }
 
   /**
@@ -209,7 +211,9 @@ class memoryGame extends HTMLElement {
     cards.forEach(card => {
       card.remove()
     })
-    alert(`you Won with ${this.playerAttempts} attempts, play again?`)
+    this.stopTimer()
+    alert(`You won with ${this.playerAttempts} attempts, and it took you ${this._timeLeft} seconds to complete the game. Press 'OK'to play again`)
+    this.resetTimer()
     // show buttons
     this.hideButtons()
     this.playerAttemptsElement.innerHTML = 0
@@ -217,24 +221,39 @@ class memoryGame extends HTMLElement {
     console.log('reset game')
   }
 
+  /**
+   * Start timer. Copied code from my quiz application.
+   */
   startTimer () {
-    this.timer = setInterval(() => {
-      this.startTime += 1
+    this._timer = setInterval(() => {
+      this._timeLeft += 1
+      this._timeDisplay.textContent = this._timeLeft
+
+      if (this._timeLeft <= 0) {
+        this.resetTimer()
+        //  this.dispatchEvent(new window.CustomEvent('timeout', { detail: { timeout: true } }))
+      }
     }, 1000)
   }
 
+  /**
+   * Stop timer. Copied code from my quiz application.
+   */
   stopTimer () {
-    clearInterval(this.timer)
-    this.saveTimer()
-  }
-
-  saveTimer() {
-    const duration = this.startTime
-    return this.startTime
+    clearInterval(this._timer)
   }
 
   /**
-   *
+   * Reset timer. Copied code from my quiz application.
+   */
+  resetTimer () {
+    clearInterval(this._timer)
+    this._timeLeft = 0
+    this._timeDisplay.textContent = this._timeLeft
+  }
+
+  /**
+   * Adds event.
    */
   connectedCallback () {
     this.fourByFourBtn.addEventListener('click', (e) => {
@@ -242,6 +261,7 @@ class memoryGame extends HTMLElement {
       this.createFourByFourCards()
       this.hideButtons()
       this.addEventToCards()
+      this.startTimer()
     })
 
     this.fourByTwoBtn.addEventListener('click', (e) => {
@@ -249,6 +269,7 @@ class memoryGame extends HTMLElement {
       this.createFourByTwoCards()
       this.hideButtons()
       this.addEventToCards()
+      this.startTimer()
     })
 
     this.twoByTwoBtn.addEventListener('click', (e) => {
@@ -256,11 +277,12 @@ class memoryGame extends HTMLElement {
       this.createTwoByTwoCards()
       this.hideButtons()
       this.addEventToCards()
+      this.startTimer()
     })
   }
 
   /**
-   *
+   * Removes event.
    */
   disconnectedCallback () {
     this.fourByFourBtn.removeEventListener('click', (e) => {
