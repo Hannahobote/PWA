@@ -3,8 +3,9 @@ import './components/my-window/my-window.js'
 // import './components/memory-game/memory-game.js'
 import './components/memory-game/memory-game2.js'
 import './components/my-dock/my-dock.js'
-import './components/my-icon/my-icon.js'
+// import './components/my-icon/my-icon.js'
 import './components/my-icon/my-icon2.js'
+import './components/my-chat/my-chat.js'
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -90,8 +91,11 @@ class myApp extends HTMLElement {
   /**
    *
    */
-  createSubApp1 () {
-    console.log('created!')
+  createChatApp () {
+    const window = document.createElement('my-window')
+    const memoryApp = document.createElement('my-chat')
+    window.appendChild(memoryApp)
+    this.shadowRoot.querySelector('#app2').appendChild(window)
   }
 
   /**
@@ -111,7 +115,7 @@ class myApp extends HTMLElement {
     })
 
     this.iconTwo.addEventListener('click', () => {
-      this.createMemoryApp()
+      this.createChatApp()
       console.log('click!')
     })
 
