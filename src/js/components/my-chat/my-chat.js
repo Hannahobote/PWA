@@ -11,7 +11,8 @@ template.innerHTML = `
   <div> welcome to the chat </div>
   <div id="chat-container"> </div>
 <form name="chat-app" id="chat-app">
-  <input type="text" name="msg" id="msgInput">
+<textarea rows="4" cols="50" id="msgInput"> </textarea>
+ <!-- <input type="text" name="msg" id="msgInput">-->
   <input type="submit" value="Send" id="sendMsg">
 </form>
   `
@@ -77,12 +78,12 @@ class myChat extends HTMLElement {
 
     this.socket.addEventListener('message', (event) => {
       const msgJSON = JSON.parse(event.data)
-      if (msgJSON.channel === 'aot') {
-        console.log(msgJSON)
-        const div = document.createElement('div')
-        div.innerText = `${msgJSON.username}: ${msgJSON.data}`
-        this.shadowRoot.querySelector('#chat-container').appendChild(div)
-      }
+     /* if (msgJSON.channel === 'aot') {
+      }*/
+      console.log(msgJSON)
+      const div = document.createElement('div')
+      div.innerText = `${msgJSON.username}: ${msgJSON.data}`
+      this.shadowRoot.querySelector('#chat-container').appendChild(div)
     })
 
     this.socket.addEventListener('open', () => {
