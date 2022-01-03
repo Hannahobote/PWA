@@ -66,7 +66,7 @@ class myWindow extends HTMLElement {
     this.controllPanel = this.shadowRoot.querySelector('.controllPanel')
     this.window = this.shadowRoot.querySelector('.window')
     this.dragValue = null
-    this.dragElement(this.container)
+    // this.dragElement(this.container)
   }
 
   // eslint-disable-next-line jsdoc/check-examples
