@@ -27,21 +27,21 @@ template.innerHTML = `
 
     <div slot="item1">  
       <my-icon2 class="icon1" > 
-          <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> 
+          <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/star.png"> </div> 
       </my-icon2>
       <div id="app1"></div>
     </div>
 
     <div slot="item2">  
       <my-icon2 class="icon2"> 
-          <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> 
+          <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/speech-bubble.png"> </div> 
       </my-icon2>
       <div id="app2"></div>
     </div>
 
     <div slot="item3">  
       <my-icon2 class="icon3"> 
-            <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/google-logo.png"> </div> 
+            <div slot="image">  <img src="https://img.icons8.com/ios/250/000000/home.png"> </div> 
       </my-icon2>
       <div id="app3"></div>
     </div>

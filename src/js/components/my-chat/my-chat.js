@@ -100,8 +100,6 @@ class myChat extends HTMLElement {
     this.sendMsgBtn.addEventListener('click', () => {
       console.log(this.msgInput.value)
       this.sendMsgToServer(this.msgInput.value)
-      // append msg from server to DOM
-      // this.createMsg(this.msgInput.value)
       // clear the input box
       this.msgInput.value = ''
     })
