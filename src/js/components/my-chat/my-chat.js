@@ -30,8 +30,6 @@ class myChat extends HTMLElement {
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
     this.socket = new WebSocket('wss://courselab.lnu.se/message-app/socket')
-    this.connectToSocket()
-    // set username
     this.setUsername()
     this.sendMsgBtn = this.shadowRoot.querySelector('#sendMsg')
     this.chatAppForm = this.shadowRoot.querySelector('#chat-app')
@@ -39,47 +37,7 @@ class myChat extends HTMLElement {
   }
 
   /**
-   * Msg to send.
-   *
-   * @param {string} msg
-   */
-  createMsg (msg) {
-    const div = document.createElement('div')
-    div.innerText = `${this.name}: ${msg}`
-    this.chatAppForm.appendChild(div)
-  }
-
-  /**
-   * Connect to socket.
-   */
-  connectToSocket () {
-    /**
-     * Notify if socket is connected.
-     */
-    this.socket.onopen = function () {
-      console.log('connection established, sending to server')
-    }
-
-    /**
-     * Notifies us if theres a msg from the server.
-     *
-     *@param {object} event socket event.
-     */
-    this.socket.onmessage = function (event) {
-      console.log('msg from the server')
-      console.log(event.data)
-    }
-
-    /**
-     * Check is socket is disconnected.
-     */
-    this.socket.onclose = function () {
-      console.log('connection closed')
-    }
-  }
-
-  /**
-   *
+   * Set a chat username.
    */
   setUsername () {
     this.name = prompt('whats your name?')
@@ -118,18 +76,32 @@ class myChat extends HTMLElement {
     this.chatAppForm.addEventListener('submit', this.prevent)
 
     this.socket.addEventListener('message', (event) => {
+      const msgJSON = JSON.parse(event.data)
+      if (msgJSON.channel === 'aot') {
+        console.log(msgJSON)
+        const div = document.createElement('div')
+        div.innerText = `${msgJSON.username}: ${msgJSON.data}`
+        this.shadowRoot.querySelector('#chat-container').appendChild(div)
+      }
+    })
+
+    this.socket.addEventListener('open', () => {
       const div = document.createElement('div')
-      div.innerText = `${this.name}: ${event.data}`
+      div.innerText = `${this.name} joined the chat`
       this.shadowRoot.querySelector('#chat-container').appendChild(div)
-      console.log(event.data)
+    })
+
+    this.socket.addEventListener('close', () => {
+      const div = document.createElement('div')
+      div.innerText = `${this.name} has left the chat`
+      this.shadowRoot.querySelector('#chat-container').appendChild(div)
     })
     // send msg to server
     this.sendMsgBtn.addEventListener('click', () => {
-      //  this.createMsg(`${this.name} joined the chat`)
       console.log(this.msgInput.value)
       this.sendMsgToServer(this.msgInput.value)
       // append msg from server to DOM
-      this.createMsg(this.msgInput.value)
+      // this.createMsg(this.msgInput.value)
       // clear the input box
       this.msgInput.value = ''
     })
