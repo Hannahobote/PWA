@@ -9,6 +9,7 @@ template.innerHTML = `
   </style>
 
   <div> welcome to the chat </div>
+  <div id="chat-container"> </div>
 <form name="chat-app" id="chat-app">
   <input type="text" name="msg" id="msgInput">
   <input type="submit" value="Send" id="sendMsg">
@@ -38,6 +39,17 @@ class myChat extends HTMLElement {
   }
 
   /**
+   * Msg to send.
+   *
+   * @param {string} msg
+   */
+  createMsg (msg) {
+    const div = document.createElement('div')
+    div.innerText = `${this.name}: ${msg}`
+    this.chatAppForm.appendChild(div)
+  }
+
+  /**
    * Connect to socket.
    */
   connectToSocket () {
@@ -56,9 +68,6 @@ class myChat extends HTMLElement {
     this.socket.onmessage = function (event) {
       console.log('msg from the server')
       console.log(event.data)
-
-      // append msg from server to DOM
-      this.appendMsg(event.data)
     }
 
     /**
@@ -93,15 +102,6 @@ class myChat extends HTMLElement {
   }
 
   /**
-   * @param msg
-   */
-  appendMsg (msg) {
-    const div = document.createElement('div')
-    div.innerText = msg
-    this.chatAppForm.appendChild(div)
-  }
-
-  /**
    * Prevents submit.
    *
    * @param {object} e event.
@@ -117,10 +117,19 @@ class myChat extends HTMLElement {
   connectedCallback () {
     this.chatAppForm.addEventListener('submit', this.prevent)
 
+    this.socket.addEventListener('message', (event) => {
+      const div = document.createElement('div')
+      div.innerText = `${this.name}: ${event.data}`
+      this.shadowRoot.querySelector('#chat-container').appendChild(div)
+      console.log(event.data)
+    })
     // send msg to server
     this.sendMsgBtn.addEventListener('click', () => {
+      //  this.createMsg(`${this.name} joined the chat`)
       console.log(this.msgInput.value)
       this.sendMsgToServer(this.msgInput.value)
+      // append msg from server to DOM
+      this.createMsg(this.msgInput.value)
       // clear the input box
       this.msgInput.value = ''
     })
