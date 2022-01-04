@@ -37,7 +37,6 @@ template.innerHTML = `
 
  </style>
   <div class="container" id="mydiv">
-    <div >Click here to move</div>
     <div class="controllPanel" id="mydivheader"> 
       <button>-</button>
       <button>||</button>
@@ -68,7 +67,6 @@ class myWindow extends HTMLElement {
     this.window = this.shadowRoot.querySelector('.window')
     this.dragValue = null
     this.dragElement(this.container)
-   // this.dragHeader(this.shadowRoot.querySelector('#mydiv'))
   }
 
   // eslint-disable-next-line jsdoc/check-examples
@@ -100,11 +98,9 @@ class myWindow extends HTMLElement {
     if (this.shadowRoot.getElementById(elmnt.id + 'header')) {
       // if present, the header is where you move the DIV from:
       this.shadowRoot.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown
-      console.log('helloooo')
     } else {
       // otherwise, move the DIV from anywhere inside the DIV:
       elmnt.onmousedown = dragMouseDown
-      console.log('world')
     }
 
     /**
@@ -131,62 +127,6 @@ class myWindow extends HTMLElement {
       document.onmouseup = null
       document.onmousemove = null
       this.container.classList.remove('active')
-    }
-  }
-
-  /**
-   * @param elmnt
-   */
-  dragHeader(elmnt) {
-    let pos1 = 0; let pos2 = 0; let pos3 = 0; let pos4 = 0
-
-    if (document.getElementById(elmnt.id + 'header')) {
-      /* if present, the header is where you move the DIV from: */
-      document.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown
-    } else {
-      /* otherwise, move the DIV from anywhere inside the DIV: */
-      elmnt.onmousedown = dragMouseDown
-    }
-
-    /**
-     * @param e
-     */
-    function dragMouseDown (e) {
-      e = e || window.event
-      e.preventDefault()
-      // get the mouse cursor position at startup:
-      pos3 = e.clientX
-      pos4 = e.clientY
-      document.onmouseup = closeDragElement
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementDrag
-     // this.container.classList.add('active')
-    }
-
-    /**
-     * @param e
-     */
-    function elementDrag (e) {
-      e = e || window.event
-      e.preventDefault()
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX
-      pos2 = pos4 - e.clientY
-      pos3 = e.clientX
-      pos4 = e.clientY
-      // set the element's new position:
-      elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
-      elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
-    }
-
-    /**
-     *
-     */
-    function closeDragElement () {
-    /* stop moving when mouse button is released: */
-      document.onmouseup = null
-      document.onmousemove = null
-      //this.container.classList.remove('active')
     }
   }
 
