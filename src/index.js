@@ -1,11 +1,11 @@
 // imports all the components. Later on only use this one file and import it to html to get acces to the components ?
-import './components/my-window/my-window.js'
+import './js/components/my-window/my-window.js'
 // import './components/memory-game/memory-game.js'
-import './components/memory-game/memory-game2.js'
-import './components/my-dock/my-dock.js'
+import './js/components/memory-game/memory-game2.js'
+import './js/components/my-dock/my-dock.js'
 // import './components/my-icon/my-icon.js'
-import './components/my-icon/my-icon2.js'
-import './components/my-chat/my-chat.js'
+import './js/components/my-icon/my-icon2.js'
+import './js/components/my-chat/my-chat.js'
 
 const template = document.createElement('template')
 template.innerHTML = `

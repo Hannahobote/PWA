@@ -78,8 +78,11 @@ class myChat extends HTMLElement {
 
     this.socket.addEventListener('message', (event) => {
       const msgJSON = JSON.parse(event.data)
-     /* if (msgJSON.channel === 'aot') {
-      }*/
+      /* if (msgJSON.channel === 'aot') {
+      } */
+      // put msg in array in localstorage
+      // filert view the lastest 20???
+      // then show on chat
       console.log(msgJSON)
       const div = document.createElement('div')
       div.innerText = `${msgJSON.username}: ${msgJSON.data}`
