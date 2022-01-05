@@ -5,7 +5,9 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style> 
-
+  #chat-container, #chat-app {
+    positon: relative;
+  }
   </style>
 
   <div> welcome to the chat </div>
@@ -31,8 +33,6 @@ class myChat extends HTMLElement {
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
     this.socket = new WebSocket('wss://courselab.lnu.se/message-app/socket')
-    // this.setUsername()
-    // this.getLocalStorageName()
     this.name = this.getLocalStorageName()
     this.sendMsgBtn = this.shadowRoot.querySelector('#sendMsg')
     this.chatAppForm = this.shadowRoot.querySelector('#chat-app')
@@ -40,7 +40,7 @@ class myChat extends HTMLElement {
     this.storage = []
     // set storage array to previous chat history
     this.storage = this.getLocalStorage()
-    console.log(this.storage)
+    this.chatContainer = this.shadowRoot.querySelector('#chat-container')
   }
 
   /**
@@ -133,9 +133,11 @@ class myChat extends HTMLElement {
       this.storage.push({ username: msgJSON.username, data: msgJSON.data })
       // console.log(this.storage)
       this.createLocalStorage()
+      // delete the first div in container, not the best solution but it works
+      this.chatContainer.removeChild(this.chatContainer.childNodes[0])
       const div = document.createElement('div')
       div.innerText = `${msgJSON.username}: ${msgJSON.data}`
-      this.shadowRoot.querySelector('#chat-container').appendChild(div)
+      this.chatContainer.appendChild(div)
     })
 
     this.socket.addEventListener('open', () => {
@@ -143,20 +145,19 @@ class myChat extends HTMLElement {
       div.innerText = `${this.name} joined the chat`
       this.shadowRoot.querySelector('#chat-container').appendChild(div)
       // upon opening the chat, load chat history
-      let chatHistory = this.storage
-      chatHistory = chatHistory.slice(-20)
-      console.log(chatHistory)
-      chatHistory.forEach(chat => {
+      this.storage = this.storage.slice(-20)
+      console.log(this.storage)
+      this.storage.forEach(chat => {
         const div2 = document.createElement('div')
         div2.innerText = `${chat.username}: ${chat.data}`
-        this.shadowRoot.querySelector('#chat-container').appendChild(div2)
+        this.chatContainer.appendChild(div2)
       })
     })
 
     this.socket.addEventListener('close', () => {
       const div = document.createElement('div')
       div.innerText = `${this.name} has left the chat`
-      this.shadowRoot.querySelector('#chat-container').appendChild(div)
+      this.chatContainer.appendChild(div)
     })
     // send msg to server
     this.sendMsgBtn.addEventListener('click', () => {
