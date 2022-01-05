@@ -35,6 +35,10 @@ class myChat extends HTMLElement {
     this.sendMsgBtn = this.shadowRoot.querySelector('#sendMsg')
     this.chatAppForm = this.shadowRoot.querySelector('#chat-app')
     this.msgInput = this.shadowRoot.querySelector('#msgInput')
+    this.storage = []
+    // set storage array to previous chat history
+    this.storage = this.getLocalStorage()
+    console.log(this.storage)
   }
 
   /**
@@ -67,7 +71,38 @@ class myChat extends HTMLElement {
    */
   prevent (e) {
     e.preventDefault()
-    console.log('submit prevented')
+    // console.log('submit prevented')
+  }
+
+  /**
+   *
+   */
+  createLocalStorage () {
+    localStorage.setItem('userChat', JSON.stringify(this.storage))
+  }
+
+  /**
+   *
+   */
+  getLocalStorage () {
+    let chatHistory = localStorage.getItem('userChat')
+
+    if (chatHistory === null) {
+      this.createLocalStorage()
+      chatHistory = localStorage.getItem('userChat')
+    }
+    // return in json
+    return JSON.parse(chatHistory)
+  }
+
+  renderChatHistory() {
+    const chatHistory = this.storage
+    // put msg in array in localstorage
+    // filert view the lastest 20???
+    // then show on chat
+    const div = document.createElement('div')
+    div.innerText = `${chatHistory.username}: ${chatHistory.data}`
+    this.shadowRoot.querySelector('#chat-container').appendChild(div)
   }
 
   /**
@@ -78,21 +113,29 @@ class myChat extends HTMLElement {
 
     this.socket.addEventListener('message', (event) => {
       const msgJSON = JSON.parse(event.data)
-      /* if (msgJSON.channel === 'aot') {
-      } */
-      // put msg in array in localstorage
-      // filert view the lastest 20???
-      // then show on chat
-      console.log(msgJSON)
-      const div = document.createElement('div')
+      // everytime theres a new chat, send to local storage.
+      this.createLocalStorage()
+      this.storage.push({ username: msgJSON.username, data: msgJSON.data })
+      console.log(this.storage)
+      /* const div = document.createElement('div')
       div.innerText = `${msgJSON.username}: ${msgJSON.data}`
-      this.shadowRoot.querySelector('#chat-container').appendChild(div)
+      this.shadowRoot.querySelector('#chat-container').appendChild(div) */
     })
 
     this.socket.addEventListener('open', () => {
       const div = document.createElement('div')
       div.innerText = `${this.name} joined the chat`
       this.shadowRoot.querySelector('#chat-container').appendChild(div)
+      // upon opening the chat, load chat history 
+      // put msg in array in localstorage
+      // filert view the lastest 20???
+      // then show on chat
+      const chatHistory = this.storage
+      chatHistory.forEach(chat => {
+        const div2 = document.createElement('div')
+        div2.innerText = `${chat.username}: ${chat.data}`
+        this.shadowRoot.querySelector('#chat-container').appendChild(div2)
+      })
     })
 
     this.socket.addEventListener('close', () => {
