@@ -31,7 +31,9 @@ class myChat extends HTMLElement {
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
     this.socket = new WebSocket('wss://courselab.lnu.se/message-app/socket')
-    this.setUsername()
+    // this.setUsername()
+    // this.getLocalStorageName()
+    this.name = this.getLocalStorageName()
     this.sendMsgBtn = this.shadowRoot.querySelector('#sendMsg')
     this.chatAppForm = this.shadowRoot.querySelector('#chat-app')
     this.msgInput = this.shadowRoot.querySelector('#msgInput')
@@ -84,6 +86,30 @@ class myChat extends HTMLElement {
   /**
    *
    */
+  createLocalStorageName () {
+    localStorage.setItem('username', JSON.stringify(this.name))
+  }
+
+  /**
+   *
+   */
+  getLocalStorageName () {
+    let name = localStorage.getItem('username')
+
+    if (name === null) {
+      // set username if it DOES NOT exist in local storage
+      this.setUsername()
+      this.createLocalStorageName()
+      name = localStorage.getItem('name')
+    }
+    // return in json
+    console.log(JSON.parse(localStorage.getItem('username')))
+    return JSON.parse(localStorage.getItem('username'))
+  }
+
+  /**
+   *
+   */
   getLocalStorage () {
     let chatHistory = localStorage.getItem('userChat')
 
@@ -105,7 +131,7 @@ class myChat extends HTMLElement {
       const msgJSON = JSON.parse(event.data)
       // everytime theres a new chat, send to local storage.
       this.storage.push({ username: msgJSON.username, data: msgJSON.data })
-     // console.log(this.storage)
+      // console.log(this.storage)
       this.createLocalStorage()
       const div = document.createElement('div')
       div.innerText = `${msgJSON.username}: ${msgJSON.data}`
