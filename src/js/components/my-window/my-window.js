@@ -93,8 +93,6 @@ class myWindow extends HTMLElement {
     }
 
     let pos1 = 0; let pos2 = 0; let pos3 = 0; let pos4 = 0
-    console.log(elmnt.id)
-    console.log(elmnt.id + 'header')
     if (this.shadowRoot.getElementById(elmnt.id + 'header')) {
       // if present, the header is where you move the DIV from:
       this.shadowRoot.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown

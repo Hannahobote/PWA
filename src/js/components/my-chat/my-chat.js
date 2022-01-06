@@ -1,3 +1,4 @@
+import 'emoji-picker-element'
 /* eslint-disable jsdoc/check-examples */
 /**
  * Template.
@@ -8,14 +9,24 @@ template.innerHTML = `
   #chat-container, #chat-app {
     positon: relative;
   }
-  </style>
 
-  <div> welcome to the chat </div>
+  .show {
+   display:none;
+ }
+
+ emoji-picker {
+   float: right;
+ }
+
+  </style>
+  <div> welcome to the chat, Pick a channel </div>
   <div id="chat-container"> </div>
 <form name="chat-app" id="chat-app">
-<textarea rows="4" cols="50" id="msgInput"> </textarea>
- <!-- <input type="text" name="msg" id="msgInput">-->
+<textarea rows="2" cols="70" id="msgInput"> </textarea>
   <input type="submit" value="Send" id="sendMsg">
+  <button id="emoji">emoji</button>
+  <emoji-picker class="show" id="emojiEL"></emoji-picker>
+
 </form>
   `
 /**
@@ -38,9 +49,11 @@ class myChat extends HTMLElement {
     this.chatAppForm = this.shadowRoot.querySelector('#chat-app')
     this.msgInput = this.shadowRoot.querySelector('#msgInput')
     this.storage = []
+    this.chatContainer = this.shadowRoot.querySelector('#chat-container')
     // set storage array to previous chat history
     this.storage = this.getLocalStorage()
-    this.chatContainer = this.shadowRoot.querySelector('#chat-container')
+    this.emojiBtn = this.shadowRoot.querySelector('#emoji')
+    this.emojiElement = this.shadowRoot.querySelector('#emojiEL')
   }
 
   /**
@@ -52,14 +65,15 @@ class myChat extends HTMLElement {
 
   /**
    * @param msg
+   * @param channel
    */
-  sendMsgToServer (msg) {
+  sendMsgToServer (msg, channel) {
     // create message
     const messageToSend = {
       type: 'message',
       data: msg,
       username: this.name,
-      channel: 'aot',
+      channel,
       key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     }
     // send message to server
@@ -103,7 +117,6 @@ class myChat extends HTMLElement {
       name = localStorage.getItem('name')
     }
     // return in json
-    console.log(JSON.parse(localStorage.getItem('username')))
     return JSON.parse(localStorage.getItem('username'))
   }
 
@@ -124,47 +137,117 @@ class myChat extends HTMLElement {
   /**
    *
    */
-  connectedCallback () {
-    this.chatAppForm.addEventListener('submit', this.prevent)
+  userJoinedChat () {
+    const div = document.createElement('div')
+    div.innerText = `${this.name} joined the chat`
+    this.shadowRoot.querySelector('#chat-container').appendChild(div)
+  }
 
+  /**
+   *
+   */
+  userLeftChat () {
+    const div = document.createElement('div')
+    div.innerText = `${this.name} has left the chat`
+    this.chatContainer.appendChild(div)
+  }
+
+  /**
+   *
+   */
+  loadChatHistory () {
+    this.storage = this.storage.slice(-19)
+    console.log(this.storage)
+    this.chatContainer.textContent = this.storage
+    this.storage.forEach(chat => {
+      const div2 = document.createElement('div')
+      div2.innerText = `${chat.username}: ${chat.data}`
+      this.chatContainer.appendChild(div2)
+    })
+  }
+
+  /**
+   * @param username
+   * @param data
+   */
+  createChat (username, data) {
+    const div = document.createElement('div')
+    div.innerText = `${username}: ${data}`
+    this.chatContainer.appendChild(div)
+  }
+
+  /**
+   *
+   */
+  socketMessage () {
     this.socket.addEventListener('message', (event) => {
+      // parse data to json
       const msgJSON = JSON.parse(event.data)
       // everytime theres a new chat, send to local storage.
-      this.storage.push({ username: msgJSON.username, data: msgJSON.data })
-      // console.log(this.storage)
+      this.storage.push({ username: msgJSON.username, data: msgJSON.data, channel: msgJSON.channel })
       this.createLocalStorage()
       // delete the first div in container, not the best solution but it works
-      this.chatContainer.removeChild(this.chatContainer.childNodes[0])
-      const div = document.createElement('div')
-      div.innerText = `${msgJSON.username}: ${msgJSON.data}`
-      this.chatContainer.appendChild(div)
+      if (this.getLocalStorage().length > 19) {
+        this.chatContainer.removeChild(this.chatContainer.childNodes[0])
+      }
+      this.createChat(msgJSON.username, msgJSON.data)
     })
+  }
 
+  /**
+   *
+   */
+  socketOpen () {
     this.socket.addEventListener('open', () => {
-      const div = document.createElement('div')
-      div.innerText = `${this.name} joined the chat`
-      this.shadowRoot.querySelector('#chat-container').appendChild(div)
+      this.userJoinedChat()
       // upon opening the chat, load chat history
-      this.storage = this.storage.slice(-20)
-      console.log(this.storage)
-      this.storage.forEach(chat => {
-        const div2 = document.createElement('div')
-        div2.innerText = `${chat.username}: ${chat.data}`
-        this.chatContainer.appendChild(div2)
-      })
+      this.loadChatHistory()
     })
+  }
 
-    this.socket.addEventListener('close', () => {
-      const div = document.createElement('div')
-      div.innerText = `${this.name} has left the chat`
-      this.chatContainer.appendChild(div)
-    })
+  /**
+   *
+   */
+  socketClose () {
+    this.socket.addEventListener('close', this.userLeftChat())
+  }
+
+  /**
+   *
+   */
+  onSendingMsg () {
     // send msg to server
     this.sendMsgBtn.addEventListener('click', () => {
-      console.log(this.msgInput.value)
-      this.sendMsgToServer(this.msgInput.value)
+      this.sendMsgToServer(this.msgInput.value, 'aot')
       // clear the input box
       this.msgInput.value = ''
+    })
+  }
+
+  /**
+   *
+   */
+  schoolChannel () {
+    this.socketOpen()
+    this.socketMessage()
+    this.onSendingMsg()
+    this.socketClose()
+  }
+
+  /**
+   *
+   */
+  connectedCallback () {
+    this.chatAppForm.addEventListener('submit', this.prevent)
+    this.schoolChannel()
+    this.shadowRoot.querySelector('emoji-picker').addEventListener('emoji-click', event => {
+      console.log(event.detail)
+      console.log(event.detail.unicode)
+      this.msgInput.value = this.msgInput.value + event.detail.unicode
+    })
+
+    this.emojiBtn.addEventListener('click', () => {
+      this.emojiElement.classList.toggle('show')
     })
   }
 }
