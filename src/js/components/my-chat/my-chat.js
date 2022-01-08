@@ -16,16 +16,30 @@ template.innerHTML = `
 
  emoji-picker {
    float: right;
+   resize: both;
+ /* width: 100%;
+  height: 100%;*/
  }
 
+ #emoji-container {
+   positon: relative;
+   /*float: right;
+  width: 300px;
+  height: 150px;*/
+ }
+
+
   </style>
+
   <div> welcome to the chat, Pick a channel </div>
   <div id="chat-container"> </div>
 <form name="chat-app" id="chat-app">
 <textarea rows="2" cols="70" id="msgInput"> </textarea>
   <input type="submit" value="Send" id="sendMsg">
   <button id="emoji">emoji</button>
-  <emoji-picker class="show" id="emojiEL"></emoji-picker>
+  <div id="emoji-container"> 
+    <emoji-picker class="show" id="emojiEl"></emoji-picker>
+  </div>
 
 </form>
   `
@@ -53,7 +67,7 @@ class myChat extends HTMLElement {
     // set storage array to previous chat history
     this.storage = this.getLocalStorage()
     this.emojiBtn = this.shadowRoot.querySelector('#emoji')
-    this.emojiElement = this.shadowRoot.querySelector('#emojiEL')
+    this.emojiElement = this.shadowRoot.querySelector('#emojiEl')
   }
 
   /**

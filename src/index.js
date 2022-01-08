@@ -6,6 +6,7 @@ import './js/components/my-dock/my-dock.js'
 // import './components/my-icon/my-icon.js'
 import './js/components/my-icon/my-icon2.js'
 import './js/components/my-chat/my-chat.js'
+import './js/components/my-anime/my-anime'
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -93,16 +94,19 @@ class myApp extends HTMLElement {
    */
   createChatApp () {
     const window = document.createElement('my-window')
-    const memoryApp = document.createElement('my-chat')
-    window.appendChild(memoryApp)
+    const chatApp = document.createElement('my-chat')
+    window.appendChild(chatApp)
     this.shadowRoot.querySelector('#app2').appendChild(window)
   }
 
   /**
    *
    */
-  createSubApp2 () {
-    console.log('created!')
+  createAnimeApp () {
+    const window = document.createElement('my-window')
+    const animeApp = document.createElement('my-anime')
+    window.appendChild(animeApp)
+    this.shadowRoot.querySelector('#app3').appendChild(window)
   }
 
   /**
@@ -120,7 +124,7 @@ class myApp extends HTMLElement {
     })
 
     this.iconThree.addEventListener('click', () => {
-      this.createMemoryApp()
+      this.createAnimeApp()
       console.log('click!')
     })
   }
