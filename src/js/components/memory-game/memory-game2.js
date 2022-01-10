@@ -16,7 +16,7 @@ button, input {
     margine: none;
   }
 
-  
+
     .board {
     display: grid;
     gap: 10px;
@@ -99,26 +99,27 @@ class memoryGame extends HTMLElement {
    *
    */
   createFourByFourCards () {
-    const cards = this.shuffleColorData(this.colorData)
-    this.createCards(cards)
+    const cards = this.colorData
+    const shuffledCards = this.shuffleColorData(cards)
+    this.createCards(shuffledCards)
   }
 
   /**
    *
    */
   createFourByTwoCards () {
-    let cards = this.colorData.slice(0, 8)
-    cards = this.shuffleColorData(cards)
-    this.createCards(cards)
+    const cards = this.colorData.slice(0, 8)
+    const shuffledCards = this.shuffleColorData(cards)
+    this.createCards(shuffledCards)
   }
 
   /**
    *
    */
   createTwoByTwoCards () {
-    let cards = this.colorData.slice(0, 4)
-    cards = this.shuffleColorData(cards)
-    this.createCards(cards)
+    const cards = this.colorData.slice(0, 4)
+    const shuffledCards = this.shuffleColorData(cards)
+    this.createCards(shuffledCards)
   }
 
   /**

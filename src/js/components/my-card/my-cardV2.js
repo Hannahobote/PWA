@@ -10,7 +10,7 @@ template.innerHTML = `
    height: 100px;
    width: 100px;
    position: absolute;
-   background-color: #eee;
+   background-color: #873e23;
    border: 0px solid;
 
   }

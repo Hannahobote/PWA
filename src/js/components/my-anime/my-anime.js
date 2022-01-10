@@ -5,8 +5,17 @@ const template = document.createElement('template')
 template.innerHTML = `
  
   <style>
+      button, input {
+    background-color: #eee;
+    text-decoration: none;
+    border-radius: 25px;
+    border: none;
+    padding: 10px;
+    margin: none;
+  }
+
   </style>
-  
+
    <div class="container">
     <span class="anime"> </span>
     </br>
