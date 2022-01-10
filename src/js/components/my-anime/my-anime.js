@@ -6,6 +6,7 @@ template.innerHTML = `
  
   <style>
   </style>
+  
    <div class="container">
     <span class="anime"> </span>
     </br>
@@ -51,7 +52,7 @@ class myAnime extends HTMLElement {
       .then(response => response.json())
       .then(res => {
         console.log(res)
-        this.anime.textContent =`Anime: ${res.anime}`
+        this.anime.textContent = `Anime: ${res.anime}`
         this.character.textContent = `Charachter: ${res.character}`
         this.text.textContent = `Quote: ${res.quote}`
       })
@@ -60,7 +61,7 @@ class myAnime extends HTMLElement {
   /**
    *
    */
-   connectedCallback () {
+  connectedCallback () {
     this.btn.addEventListener('submit', (e) => {
       e.preventDefault()
     })

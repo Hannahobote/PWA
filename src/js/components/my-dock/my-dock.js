@@ -14,10 +14,9 @@ template.innerHTML = `
  }
 
  .dock {
-   background-color:#eee;
+   background-color:#abdbe3;
    width: 1500px;
    height:75px;
-   background-color: #eee;
    display:flex;
    justify-content: centre;
  }

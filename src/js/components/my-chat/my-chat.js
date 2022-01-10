@@ -5,7 +5,7 @@ import 'emoji-picker-element'
  */
 const template = document.createElement('template')
 template.innerHTML = `
-  <style> 
+  <style>
   #chat-container, #chat-app {
     positon: relative;
   }
@@ -31,7 +31,7 @@ template.innerHTML = `
 
   </style>
 
-  <div> welcome to the chat, Pick a channel </div>
+  <div> welcome to the chat</div>
   <div id="chat-container"> </div>
 <form name="chat-app" id="chat-app">
 <textarea rows="2" cols="70" id="msgInput"> </textarea>

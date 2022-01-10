@@ -1,7 +1,32 @@
 body {
 	position: relative;
-	width: 2000px;
-	height: 900px;
-  /*overflow: hidden;*/
-	/*outline:black solid 10px;*/
+	width: 1500px;
+	height: 700px;
+	font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
 }
+
+my-app {
+	border: 5px solid black;
+	width: 1500px;
+	height: 700px;
+	position: absolute;
+} 
+
+my-app my-chat {
+	position: relative;
+
+}
+
+my-app my-dock my-window {
+	position: relative;
+}
+
+/*my-window {
+	position: relative;
+}
+
+memory-game, my-chat, my-anime {
+	position: absolute;
+}*/
+

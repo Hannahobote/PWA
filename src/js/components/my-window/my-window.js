@@ -6,14 +6,12 @@ const template = document.createElement('template')
 template.innerHTML = `
 
  <style>
- body {
-   font-family: Arial, Helvetica, sans-serif;
- }
-
  .window{
    width: 1000px;
    height:500px;
-   background-color: #dad4a4;
+   background-color: pink;
+   border-radius: 0px 0px 15px 15px;
+   padding: 10px;
  }
 
  .container {
@@ -26,6 +24,8 @@ template.innerHTML = `
 
  .controllPanel {
    background-color:#eee;
+   border-radius: 15px 15px 0px 0px;
+   padding: 10px;
    width: 1000px;
    height:30px;
  }
@@ -67,6 +67,7 @@ class myWindow extends HTMLElement {
     this.window = this.shadowRoot.querySelector('.window')
     this.dragValue = null
     this.dragElement(this.container)
+    console.log(this)
   }
 
   // eslint-disable-next-line jsdoc/check-examples
@@ -90,6 +91,7 @@ class myWindow extends HTMLElement {
       // call a function whenever the cursor moves:
       document.onmousemove = elementDrag
       this.container.classList.add('active')
+      this.outOfBounds()
     }
 
     let pos1 = 0; let pos2 = 0; let pos3 = 0; let pos4 = 0
@@ -115,6 +117,7 @@ class myWindow extends HTMLElement {
       // set the element's new position:
       elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
       elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
+      this.outOfBounds()
     }
 
     /**
@@ -125,6 +128,33 @@ class myWindow extends HTMLElement {
       document.onmouseup = null
       document.onmousemove = null
       this.container.classList.remove('active')
+    }
+  }
+
+  outOfBounds() {
+    const bounding = this.getBoundingClientRect()
+    if (bounding.top < 0) {
+      // Top is out of viewport
+    console.log('boooo', bounding)
+
+    }
+
+    if (bounding.left < 0) {
+      // Left side is out of viewoprt
+    console.log('boooo', bounding)
+
+    }
+
+    if (bounding.bottom > (window.innerHeight || document.documentElement.clientHeight)) {
+      // Bottom is out of viewport
+    console.log('boooo', bounding)
+
+    }
+
+    if (bounding.right > (window.innerWidth || document.documentElement.clientWidth)) {
+      // Right side is out of viewport
+    console.log('boooo', bounding)
+      
     }
   }
 
