@@ -1,8 +1,6 @@
+/* eslint-disable jsdoc/check-examples */
 import '../my-card/my-cardV2.js'
 
-/**
- * Define template.
- */
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
@@ -47,7 +45,7 @@ button, input {
  */
 class memoryGame extends HTMLElement {
   /**
-   *
+   *Construtor.
    */
   constructor () {
     super()
@@ -76,14 +74,19 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   * @param colorData
+   * Shuffles color.
+   *
+   * @param {string[]} colorData colors for the cars.
+   * @returns {string[]} Shuffled colors.
    */
   shuffleColorData (colorData) {
     return colorData.sort((a, b) => 0.5 - Math.random())
   }
 
   /**
-   * @param data
+   * Template to create cards from.
+   *
+   * @param {string[]} data shuffled colors.
    */
   createCards (data) {
     data.forEach(data => {
@@ -96,7 +99,7 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   *
+   * Creates 4x4 layout for cards.
    */
   createFourByFourCards () {
     const cards = this.colorData
@@ -105,7 +108,7 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   *
+   * Creates 4x2 layout for cards.
    */
   createFourByTwoCards () {
     const cards = this.colorData.slice(0, 8)
@@ -114,7 +117,7 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   *
+   *Creates 2x2 layout for cards.
    */
   createTwoByTwoCards () {
     const cards = this.colorData.slice(0, 4)
@@ -123,7 +126,7 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   *
+   * Hides buttons form shadow DOM.
    */
   hideButtons () {
     this.fourByFourBtn.classList.toggle('hidden')
@@ -132,7 +135,9 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   * @param e
+   * Checks if the clicked cards is a match or not.
+   *
+   * @param {object} e event.
    */
   isMatch (e) {
     this.clickedCard.push(e.target.dataset.color)
@@ -175,7 +180,7 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   *
+   *Adds event to cards.
    */
   addEventToCards () {
     const myCardEl = Array.from(this.shadowRoot.querySelectorAll('my-cardtwo'))
@@ -195,7 +200,7 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   * If all cards are matched, play again
+   * If all cards are matched, play again.
    */
   winner () {
     if (this.allCardsMatched()) {
@@ -204,7 +209,9 @@ class memoryGame extends HTMLElement {
   }
 
   /**
+   * Checks if all cards are matched.
    *
+   *@returns {boolean} true if all cards are matches. else false.
    */
   allCardsMatched () {
     const myCardEl = Array.from(this.shadowRoot.querySelectorAll('my-cardtwo'))
@@ -214,7 +221,7 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   *
+   * Resets state of Game.
    */
   resetGame () {
     // remove all cards fom DOM

@@ -1,6 +1,4 @@
-/**
- * Can take in three applications.
- */
+/* eslint-disable jsdoc/check-examples */
 const template = document.createElement('template')
 template.innerHTML = `
  
@@ -29,11 +27,11 @@ template.innerHTML = `
   `
 
 /**
- *
+ * Radom anime quote generater app.
  */
 class myAnime extends HTMLElement {
   /**
-   *
+   *Constructor.
    */
   constructor () {
     super()
@@ -54,7 +52,7 @@ class myAnime extends HTMLElement {
   }
 
   /**
-   *
+   *Fetch random quote from api.
    */
   fetchRandomQoute () {
     fetch('https://animechan.vercel.app/api/random')
@@ -68,7 +66,7 @@ class myAnime extends HTMLElement {
   }
 
   /**
-   *
+   *Add events.
    */
   connectedCallback () {
     this.btn.addEventListener('submit', (e) => {

@@ -139,30 +139,29 @@ class myWindow extends HTMLElement {
     }
   }
 
-  outOfBounds() {
+  /**
+   *
+   */
+  outOfBounds () {
     const bounding = this.getBoundingClientRect()
     if (bounding.top < 0) {
       // Top is out of viewport
-    console.log('boooo', bounding)
-
+      console.log('boooo', bounding)
     }
 
     if (bounding.left < 0) {
       // Left side is out of viewoprt
-    console.log('boooo', bounding)
-
+      console.log('boooo', bounding)
     }
 
     if (bounding.bottom > (window.innerHeight || document.documentElement.clientHeight)) {
       // Bottom is out of viewport
-    console.log('boooo', bounding)
-
+      console.log('boooo', bounding)
     }
 
     if (bounding.right > (window.innerWidth || document.documentElement.clientWidth)) {
       // Right side is out of viewport
-    console.log('boooo', bounding)
-      
+      console.log('boooo', bounding)
     }
   }
 
