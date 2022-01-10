@@ -11,6 +11,7 @@ button, input {
     text-decoration: none;
     border-radius: 15px;
     padding: 5px;
+    border: none;
   }
 
  .window{

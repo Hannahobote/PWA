@@ -23,9 +23,9 @@ template.innerHTML = `
  
  </style>
   <div class="dock">
-    <p><slot name="item1" /></p>
-    <p><slot name="item2" /></p>
-    <p><slot name="item3" /></p>
+    <button><slot name="item1" /></button>
+    <button><slot name="item2" /></button>
+    <button><slot name="item3" /></button>
  </div>
  
  `
@@ -48,6 +48,18 @@ class myDock extends HTMLElement {
      * The entire window element
      */
     this.dock = this.shadowRoot.querySelector('.dock')
+  }
+
+  /**
+   *
+   */
+  connectedCallback () {
+    this.shadowRoot.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault()
+        console.log('KO')
+      })
+    })
   }
 }
 

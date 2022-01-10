@@ -17,12 +17,12 @@ template.innerHTML = `
   <div class="container"> 
 
     <div class="image"> 
-      <div><slot name="image"/></div> <!--takes in an image! document later!-->
-    </div>
+      <span><slot name="image"/></span> <!--takes in an image! document later!-->
+</div>
 
-    <div class="app"> 
+   <!-- <div class="app"> 
       <div><slot class="app2" name="app"/></div> 
-    </div>
+    </div>-->
 
   </div>
  `
