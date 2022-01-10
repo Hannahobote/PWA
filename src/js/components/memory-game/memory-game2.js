@@ -6,6 +6,17 @@ import '../my-card/my-cardV2.js'
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
+
+button, input {
+    background-color: #eee;
+    text-decoration: none;
+    border-radius: 25px;
+    border: none;
+    padding: 10px;
+    margine: none;
+  }
+
+  
     .board {
     display: grid;
     gap: 10px;

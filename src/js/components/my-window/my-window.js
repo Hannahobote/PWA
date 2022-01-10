@@ -6,6 +6,13 @@ const template = document.createElement('template')
 template.innerHTML = `
 
  <style>
+
+button, input {
+    text-decoration: none;
+    border-radius: 15px;
+    padding: 5px;
+  }
+
  .window{
    width: 1000px;
    height:500px;
@@ -31,8 +38,9 @@ template.innerHTML = `
  }
 
  .active {
-  border: 2px solid black;
-  outline: blue solid 10px;
+  border: 2px solid black ;
+  outline: #abdbe3 solid 10px;
+  border-radius:15px;
  }
 
  </style>

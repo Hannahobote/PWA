@@ -5,7 +5,27 @@ import 'emoji-picker-element'
  */
 const template = document.createElement('template')
 template.innerHTML = `
-  <style>
+
+<style>
+
+  form {
+    float: left;
+  }
+  button, input {
+    background-color: #eee;
+    text-decoration: none;
+    border-radius: 25px;
+    border: none;
+    padding: 10px;
+    margine: none;
+  }
+
+  textarea {
+    border-radius: 25px;
+    text-decoration: none;
+    border: none;
+  }
+
   #chat-container, #chat-app {
     positon: relative;
   }
@@ -34,7 +54,7 @@ template.innerHTML = `
   <div> welcome to the chat</div>
   <div id="chat-container"> </div>
 <form name="chat-app" id="chat-app">
-<textarea rows="2" cols="70" id="msgInput"> </textarea>
+ <textarea rows="2" cols="70" id="msgInput"> </textarea>
   <input type="submit" value="Send" id="sendMsg">
   <button id="emoji">emoji</button>
   <div id="emoji-container"> 
