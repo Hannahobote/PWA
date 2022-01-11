@@ -1,5 +1,4 @@
 /* eslint-disable jsdoc/check-examples */
-// imports all the components. Later on only use this one file and import it to html to get acces to the components ?
 import './js/components/my-window/my-window.js'
 import './js/components/memory-game/memory-game2.js'
 import './js/components/my-dock/my-dock.js'
