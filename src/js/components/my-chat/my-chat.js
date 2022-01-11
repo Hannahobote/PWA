@@ -27,7 +27,7 @@ template.innerHTML = `
   }
 
   #chat-container, #chat-app {
-    positon: relative;
+    position: relative;
   }
 
   .show {
@@ -37,15 +37,14 @@ template.innerHTML = `
  emoji-picker {
    float: right;
    resize: both;
- /* width: 100%;
-  height: 100%;*/
- }
+    bottom: -101px;
+    position: absolute;
+    right: -351px;
+  }
+
 
  #emoji-container {
-   positon: relative;
-   /*float: right;
-  width: 300px;
-  height: 150px;*/
+   position: relative;
  }
 
 
@@ -213,10 +212,22 @@ class myChat extends HTMLElement {
   /**
    *
    */
+  socketOpen () {
+    this.socket.addEventListener('open', () => {
+      this.userJoinedChat()
+      // upon opening the chat, load chat history
+      this.loadChatHistory()
+    })
+  }
+
+  /**
+   *
+   */
   socketMessage () {
     this.socket.addEventListener('message', (event) => {
       // parse data to json
       const msgJSON = JSON.parse(event.data)
+      console.log(msgJSON)
       // everytime theres a new chat, send to local storage.
       this.storage.push({ username: msgJSON.username, data: msgJSON.data, channel: msgJSON.channel })
       this.createLocalStorage()
@@ -225,17 +236,6 @@ class myChat extends HTMLElement {
         this.chatContainer.removeChild(this.chatContainer.childNodes[0])
       }
       this.createChat(msgJSON.username, msgJSON.data)
-    })
-  }
-
-  /**
-   *
-   */
-  socketOpen () {
-    this.socket.addEventListener('open', () => {
-      this.userJoinedChat()
-      // upon opening the chat, load chat history
-      this.loadChatHistory()
     })
   }
 
@@ -284,6 +284,8 @@ class myChat extends HTMLElement {
       this.emojiElement.classList.toggle('show')
     })
   }
+
+  // remove event 
 }
 
 window.customElements.define('my-chat', myChat)
