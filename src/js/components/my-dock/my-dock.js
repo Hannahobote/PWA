@@ -63,7 +63,7 @@ class myDock extends HTMLElement {
   }
 
   /**
-   * The docker events. (finish later)
+   * The docker events.
    */
   events () {
     this.shadowRoot.querySelectorAll('button').forEach(button => {

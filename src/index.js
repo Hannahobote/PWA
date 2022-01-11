@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/check-examples */
 // imports all the components. Later on only use this one file and import it to html to get acces to the components ?
 import './js/components/my-window/my-window.js'
 import './js/components/memory-game/memory-game2.js'
@@ -53,7 +54,7 @@ template.innerHTML = `
  */
 class myApp extends HTMLElement {
   /**
-   *
+   *Constructor.
    */
   constructor () {
     super()
@@ -71,14 +72,7 @@ class myApp extends HTMLElement {
   }
 
   /**
-   *
-   */
-  createApp () {
-    this.iconElement.createApp('memory-gametwo')
-  }
-
-  /**
-   *
+   *Creates an intance of the memory app.
    */
   createMemoryApp () {
     const window = document.createElement('my-window')
@@ -88,7 +82,7 @@ class myApp extends HTMLElement {
   }
 
   /**
-   *
+   *Creates an intance of the chat app.
    */
   createChatApp () {
     const window = document.createElement('my-window')
@@ -98,7 +92,7 @@ class myApp extends HTMLElement {
   }
 
   /**
-   *
+   *Creates an intance of the anime app.
    */
   createAnimeApp () {
     const window = document.createElement('my-window')
@@ -108,30 +102,32 @@ class myApp extends HTMLElement {
   }
 
   /**
-   *
+   * The app events.
    */
-  connectedCallback () {
+  events () {
     this.iconOne.addEventListener('click', () => {
       this.createMemoryApp()
-      console.log('click!')
     })
-
     this.iconTwo.addEventListener('click', () => {
       this.createChatApp()
-      console.log('click!')
     })
-
     this.iconThree.addEventListener('click', () => {
       this.createAnimeApp()
-      console.log('click!')
     })
   }
 
   /**
-   *
+   *Adds event.
+   */
+  connectedCallback () {
+    this.events()
+  }
+
+  /**
+   *Removes events.
    */
   disconnectedCallback () {
-
+    this.events()
   }
 }
 
