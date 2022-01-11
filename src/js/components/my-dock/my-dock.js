@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/check-examples */
 /**
  * Can take in three applications.
  */
@@ -35,7 +36,7 @@ template.innerHTML = `
  */
 class myDock extends HTMLElement {
   /**
-   *
+   *Constructor.
    */
   constructor () {
     super()
@@ -57,22 +58,35 @@ class myDock extends HTMLElement {
    */
   onEnterEvent (e) {
     if (e.keyCode === 13) {
-    	console.log('hello world')
+      console.log('hello world')
     }
   }
 
   /**
-   *
+   * The docker events. (finish later)
    */
-  connectedCallback () {
+  events () {
     this.shadowRoot.querySelectorAll('button').forEach(button => {
       button.addEventListener('click', (e) => {
         e.preventDefault()
         this.onEnterEvent(e)
+        button.addEventListener('keyup', this.onEnterEvent(e))
       })
-
-      button.addEventListener('keyup', this.onEnterEvent)
     })
+  }
+
+  /**
+   *Add event.
+   */
+  connectedCallback () {
+    this.events()
+  }
+
+  /**
+   * Removes events.
+   */
+  disconnectedCallback () {
+    this.events()
   }
 }
 

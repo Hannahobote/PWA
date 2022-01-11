@@ -61,7 +61,7 @@ button, input {
  */
 class myWindow extends HTMLElement {
   /**
-   *
+   *Constructor.
    */
   constructor () {
     super()
@@ -83,11 +83,13 @@ class myWindow extends HTMLElement {
   /**
    * Make element Dragabble.
    *
-   * @param elmnt the element to drag, in this case the container.
+   * @param {HTMLElement} elmnt the element to drag, in this case the container.
    */
   dragElement (elmnt) {
     /**
-     * @param e
+     * When mouse id draged down.
+     *
+     * @param {object} e event.
      */
     const dragMouseDown = (e) => {
       // copied from: https://www.w3schools.com/howto/howto_js_draggable.asp
@@ -113,7 +115,9 @@ class myWindow extends HTMLElement {
     }
 
     /**
-     * @param e
+     * When element is dragged.
+     *
+     * @param {object} e event.
      */
     const elementDrag = (e) => {
       e = e || window.event
@@ -130,7 +134,7 @@ class myWindow extends HTMLElement {
     }
 
     /**
-     *
+     *When element isnt moving.
      */
     const closeDragElement = () => {
       // stop moving when mouse button is released:
@@ -141,7 +145,7 @@ class myWindow extends HTMLElement {
   }
 
   /**
-   *
+   *Checks if element is out of bounds, not finished.
    */
   outOfBounds () {
     const bounding = this.getBoundingClientRect()
@@ -167,7 +171,7 @@ class myWindow extends HTMLElement {
   }
 
   /**
-   *
+   *Adds event.
    */
   connectedCallback () {
     this.deleteBtn.addEventListener('click', () => {
@@ -177,7 +181,7 @@ class myWindow extends HTMLElement {
   }
 
   /**
-   *
+   *Removes event.
    */
   disconnectedCallback () {
     this.deleteBtn.removeEventListener('click', () => {

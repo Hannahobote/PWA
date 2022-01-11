@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/check-examples */
 /**
  * Define template.
  */
@@ -24,11 +25,11 @@ template.innerHTML = `
  `
 
 /**
- * Window class can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
+ * Icon can consits of an app that view in the window. i.e when you press the app icon on the dock, a window should pop up.
  */
 class myIcon2 extends HTMLElement {
   /**
-   *
+   *Constrcutor.
    */
   constructor () {
     super()
@@ -36,22 +37,6 @@ class myIcon2 extends HTMLElement {
     // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
-
-    this.icon = this.shadowRoot.querySelector('.container')
-  }
-
-  /**
-   *
-   */
-  connectedCallback () {
-
-  }
-
-  /**
-   *
-   */
-  disconnectedCallback () {
-
   }
 }
 
