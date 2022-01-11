@@ -285,7 +285,7 @@ class myChat extends HTMLElement {
     })
   }
 
-  // remove event 
+  // remove event
 }
 
 window.customElements.define('my-chat', myChat)

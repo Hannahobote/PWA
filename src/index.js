@@ -1,9 +1,7 @@
 // imports all the components. Later on only use this one file and import it to html to get acces to the components ?
 import './js/components/my-window/my-window.js'
-// import './components/memory-game/memory-game.js'
 import './js/components/memory-game/memory-game2.js'
 import './js/components/my-dock/my-dock.js'
-// import './components/my-icon/my-icon.js'
 import './js/components/my-icon/my-icon2.js'
 import './js/components/my-chat/my-chat.js'
 import './js/components/my-anime/my-anime'

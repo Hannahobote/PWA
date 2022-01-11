@@ -51,14 +51,27 @@ class myDock extends HTMLElement {
   }
 
   /**
+   * On keyup event.
+   *
+   * @param {object} e event.
+   */
+  onEnterEvent (e) {
+    if (e.keyCode === 13) {
+    	console.log('hello world')
+    }
+  }
+
+  /**
    *
    */
   connectedCallback () {
     this.shadowRoot.querySelectorAll('button').forEach(button => {
       button.addEventListener('click', (e) => {
         e.preventDefault()
-        console.log('KO')
+        this.onEnterEvent(e)
       })
+
+      button.addEventListener('keyup', this.onEnterEvent)
     })
   }
 }

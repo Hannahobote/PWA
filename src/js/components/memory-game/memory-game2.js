@@ -15,7 +15,7 @@ button, input {
   }
 
 
-    .board {
+  .board {
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(4, auto);
@@ -41,7 +41,7 @@ button, input {
  `
 
 /**
- * Runs the app.
+ * Memory game.
  */
 class memoryGame extends HTMLElement {
   /**
@@ -49,21 +49,27 @@ class memoryGame extends HTMLElement {
    */
   constructor () {
     super()
-
-    // Attach a shadow DOM tree to this element and
-    // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
 
-    this.colorData = ['blue', 'blue', 'green', 'green', 'yellow', 'yellow', 'purple', 'purple', 'orange', 'orange', 'red', 'red', 'pink', 'pink', 'black', 'black']
+    /**
+     * colords for the memory card.
+     */
+    this.colorData = ['blue', 'blue', 'green', 'green', 'yellow', 'yellow', 'purple', 'purple', 'orange', 'orange', 'red', 'red', '#d4c7d2', '#d4c7d2', 'black', 'black']
     this.fourByFourBtn = this.shadowRoot.querySelector('#four')
     this.fourByTwoBtn = this.shadowRoot.querySelector('#fourTwo')
     this.twoByTwoBtn = this.shadowRoot.querySelector('#two')
-    // Contains the colors of the clicked cards.
+    /**
+     *Contains the colors of the clicked cards.
+     */
     this.clickedCard = []
-    // Holds the card element with its methods.
+    /**
+     * Contains the card element with its methods.
+     */
     this.clickedCardElement = []
-    // if playes do NOT match, increse counter
+    /**
+     * If playes do NOT match, increse counter.
+     */
     this.playerAttempts = 0
     this.playerAttemptsElement = this.shadowRoot.querySelector('#attempts')
     this._timeDisplay = this.shadowRoot.querySelector('#time-left')
@@ -74,7 +80,7 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   * Shuffles color.
+   * Shuffles color array.
    *
    * @param {string[]} colorData colors for the cars.
    * @returns {string[]} Shuffled colors.
@@ -95,6 +101,28 @@ class memoryGame extends HTMLElement {
       card.setColor()
       // console.log(card.dataset.color, 'dataset') //  for error handeling.
       this.shadowRoot.querySelector('.board').appendChild(card)
+    })
+  }
+
+  /**
+   * Returns all my-cardtwo elements available in the DOM
+   *
+   * @returns {HTMLElement[]} all cards
+   */
+  allCardElements () {
+    return Array.from(this.shadowRoot.querySelectorAll('my-cardtwo'))
+  }
+
+  /**
+   * Adds ID to card elemet.
+   *
+   * @param {my-cardtwo} cardElement the card eement.
+   */
+  addIdToCard (cardElement) {
+    let i = 0
+    cardElement.forEach(card => {
+      card.id = i
+      i++
     })
   }
 
@@ -126,9 +154,9 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   * Hides buttons form shadow DOM.
+   * Hides buttons from shadow DOM.
    */
-  hideButtons () {
+  toggleBtn () {
     this.fourByFourBtn.classList.toggle('hidden')
     this.fourByTwoBtn.classList.toggle('hidden')
     this.twoByTwoBtn.classList.toggle('hidden')
@@ -183,21 +211,18 @@ class memoryGame extends HTMLElement {
    *Adds event to cards.
    */
   addEventToCards () {
-    const myCardEl = Array.from(this.shadowRoot.querySelectorAll('my-cardtwo'))
+    const myCardEl = this.allCardElements()
+    this.addIdToCard(myCardEl)
     // add event listener to every card in DOM + add id
-    let i = 0
     myCardEl.forEach(card => {
-      // add id
-      card.id = i
-      // add event
       card.addEventListener('click', e => {
         // check if its a match
         this.isMatch(e)
       })
-      i++
     })
     console.log(myCardEl)
   }
+
 
   /**
    * If all cards are matched, play again.
@@ -209,9 +234,9 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   * Checks if all cards are matched.
+   * Checks if all cards are matched, to notifiy that game has ended.
    *
-   *@returns {boolean} true if all cards are matches. else false.
+   *@returns {boolean} true if all cards are matches, else false.
    */
   allCardsMatched () {
     const myCardEl = Array.from(this.shadowRoot.querySelectorAll('my-cardtwo'))
@@ -220,24 +245,36 @@ class memoryGame extends HTMLElement {
     return isMatched
   }
 
+
+    /**
+   *Checks if the chosen 2 cards are a match.
+   */
+     isCardMatch () {
+      const myCardEl = this.allCardElements()
+      myCardEl.forEach(card => {
+        card.addEventListener('click', e => {
+          // check if its a match
+          this.isMatch(e)
+        })
+      }
+      )
+    }
+
   /**
    * Resets state of Game.
    */
   resetGame () {
     // remove all cards fom DOM
     const cards = this.shadowRoot.querySelectorAll('my-cardtwo')
-    console.log(cards)
-    cards.forEach(card => {
-      card.remove()
-    })
+    cards.forEach(card => card.remove())
     this.stopTimer()
     alert(`You won with ${this.playerAttempts} attempts, and it took you ${this._timeLeft} seconds to complete the game. Press 'OK'to play again`)
     this.resetTimer()
     // show buttons
-    this.hideButtons()
-    this.playerAttemptsElement.innerHTML = 0
+    this.toggleBtn()
+    this.playerAttemptsElement.textContent = 0
     this.playerAttempts = 0
-    console.log('reset game')
+    // console.log('reset game')
   }
 
   /**
@@ -250,7 +287,6 @@ class memoryGame extends HTMLElement {
 
       if (this._timeLeft <= 0) {
         this.resetTimer()
-        //  this.dispatchEvent(new window.CustomEvent('timeout', { detail: { timeout: true } }))
       }
     }, 1000)
   }
@@ -277,25 +313,28 @@ class memoryGame extends HTMLElement {
   connectedCallback () {
     this.fourByFourBtn.addEventListener('click', (e) => {
       e.preventDefault()
+      this.toggleBtn()
       this.createFourByFourCards()
-      this.hideButtons()
-      this.addEventToCards()
+      this.addIdToCard(this.allCardElements())
+      this.isCardMatch()
       this.startTimer()
     })
 
     this.fourByTwoBtn.addEventListener('click', (e) => {
       e.preventDefault()
+      this.toggleBtn()
       this.createFourByTwoCards()
-      this.hideButtons()
-      this.addEventToCards()
+      this.addIdToCard(this.allCardElements())
+      this.isCardMatch()
       this.startTimer()
     })
 
     this.twoByTwoBtn.addEventListener('click', (e) => {
       e.preventDefault()
+      this.toggleBtn()
       this.createTwoByTwoCards()
-      this.hideButtons()
-      this.addEventToCards()
+      this.addIdToCard(this.allCardElements())
+      this.isCardMatch()
       this.startTimer()
     })
   }
@@ -307,21 +346,21 @@ class memoryGame extends HTMLElement {
     this.fourByFourBtn.removeEventListener('click', (e) => {
       e.preventDefault()
       this.createFourByFourCards()
-      this.hideButtons()
+      this.toggleBtn()
       this.addEventToCards()
     })
 
     this.fourByTwoBtn.removeEventListener('click', (e) => {
       e.preventDefault()
       this.createFourByTwoCards()
-      this.hideButtons()
+      this.toggleBtn()
       this.addEventToCards()
     })
 
     this.twoByTwoBtn.removeEventListener('click', (e) => {
       e.preventDefault()
       this.createTwoByTwoCards()
-      this.hideButtons()
+      this.toggleBtn()
       this.addEventToCards()
     })
   }
