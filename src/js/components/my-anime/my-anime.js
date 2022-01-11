@@ -21,7 +21,7 @@ template.innerHTML = `
     </br>
     <span class="quote"> </span>
     </br>
-    <button class="new-btn"> New qoute </button>
+    <button class="new-btn"> New quote </button>
   </div>
   
   `
@@ -54,7 +54,7 @@ class myAnime extends HTMLElement {
   /**
    *Fetch random quote from api.
    */
-  fetchRandomQoute () {
+  async fetchRandomQoute () {
     fetch('https://animechan.vercel.app/api/random')
       .then(response => response.json())
       .then(res => {

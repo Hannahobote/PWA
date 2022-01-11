@@ -141,6 +141,7 @@ class memoryGame extends HTMLElement {
   createFourByTwoCards () {
     const cards = this.colorData.slice(0, 8)
     const shuffledCards = this.shuffleColorData(cards)
+    console.log(shuffledCards)
     this.createCards(shuffledCards)
   }
 
@@ -151,6 +152,48 @@ class memoryGame extends HTMLElement {
     const cards = this.colorData.slice(0, 4)
     const shuffledCards = this.shuffleColorData(cards)
     this.createCards(shuffledCards)
+  }
+
+  /**
+   * Add event to the four by four game and starts it.
+   */
+  playFourByFour () {
+    this.fourByFourBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+      this.toggleBtn()
+      this.createFourByFourCards()
+      this.addIdToCard(this.allCardElements())
+      this.isCardMatch()
+      this.startTimer()
+    })
+  }
+
+  /**
+   * Add event to the four by two game and starts it.
+   */
+  playFourByTwo () {
+    this.fourByTwoBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+      this.toggleBtn()
+      this.createFourByTwoCards()
+      this.addIdToCard(this.allCardElements())
+      this.isCardMatch()
+      this.startTimer()
+    })
+  }
+
+  /**
+   * Add event to the two by two game and starts it.
+   */
+  playTwoByTwo () {
+    this.twoByTwoBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+      this.toggleBtn()
+      this.createTwoByTwoCards()
+      this.addIdToCard(this.allCardElements())
+      this.isCardMatch()
+      this.startTimer()
+    })
   }
 
   /**
@@ -208,23 +251,6 @@ class memoryGame extends HTMLElement {
   }
 
   /**
-   *Adds event to cards.
-   */
-  addEventToCards () {
-    const myCardEl = this.allCardElements()
-    this.addIdToCard(myCardEl)
-    // add event listener to every card in DOM + add id
-    myCardEl.forEach(card => {
-      card.addEventListener('click', e => {
-        // check if its a match
-        this.isMatch(e)
-      })
-    })
-    console.log(myCardEl)
-  }
-
-
-  /**
    * If all cards are matched, play again.
    */
   winner () {
@@ -245,20 +271,19 @@ class memoryGame extends HTMLElement {
     return isMatched
   }
 
-
-    /**
+  /**
    *Checks if the chosen 2 cards are a match.
    */
-     isCardMatch () {
-      const myCardEl = this.allCardElements()
-      myCardEl.forEach(card => {
-        card.addEventListener('click', e => {
-          // check if its a match
-          this.isMatch(e)
-        })
-      }
-      )
+  isCardMatch () {
+    const myCardEl = this.allCardElements()
+    myCardEl.forEach(card => {
+      card.addEventListener('click', e => {
+        // check if its a match
+        this.isMatch(e)
+      })
     }
+    )
+  }
 
   /**
    * Resets state of Game.
@@ -311,58 +336,18 @@ class memoryGame extends HTMLElement {
    * Adds event.
    */
   connectedCallback () {
-    this.fourByFourBtn.addEventListener('click', (e) => {
-      e.preventDefault()
-      this.toggleBtn()
-      this.createFourByFourCards()
-      this.addIdToCard(this.allCardElements())
-      this.isCardMatch()
-      this.startTimer()
-    })
-
-    this.fourByTwoBtn.addEventListener('click', (e) => {
-      e.preventDefault()
-      this.toggleBtn()
-      this.createFourByTwoCards()
-      this.addIdToCard(this.allCardElements())
-      this.isCardMatch()
-      this.startTimer()
-    })
-
-    this.twoByTwoBtn.addEventListener('click', (e) => {
-      e.preventDefault()
-      this.toggleBtn()
-      this.createTwoByTwoCards()
-      this.addIdToCard(this.allCardElements())
-      this.isCardMatch()
-      this.startTimer()
-    })
+    this.playFourByFour()
+    this.playFourByTwo()
+    this.playTwoByTwo()
   }
 
   /**
    * Removes event.
    */
   disconnectedCallback () {
-    this.fourByFourBtn.removeEventListener('click', (e) => {
-      e.preventDefault()
-      this.createFourByFourCards()
-      this.toggleBtn()
-      this.addEventToCards()
-    })
-
-    this.fourByTwoBtn.removeEventListener('click', (e) => {
-      e.preventDefault()
-      this.createFourByTwoCards()
-      this.toggleBtn()
-      this.addEventToCards()
-    })
-
-    this.twoByTwoBtn.removeEventListener('click', (e) => {
-      e.preventDefault()
-      this.createTwoByTwoCards()
-      this.toggleBtn()
-      this.addEventToCards()
-    })
+    this.playFourByFour()
+    this.playFourByTwo()
+    this.playTwoByTwo()
   }
 }
 

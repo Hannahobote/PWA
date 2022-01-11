@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/check-examples */
 /**
  * Define template.
  */
@@ -41,59 +42,23 @@ template.innerHTML = `
   `
 
 /**
- * Runs the app.
+ * The card version 2.
  */
 class myCard extends HTMLElement {
   /**
-   *
+   *Constructor.
    */
   constructor () {
     super()
-
-    // Attach a shadow DOM tree to this element and
-    // append the template to the shadow root.
     this.attachShadow({ mode: 'open' })
       .appendChild(template.content.cloneNode(true))
     this.cardFront = this.shadowRoot.querySelector('.cardFront')
     this.cardBack = this.shadowRoot.querySelector('.cardBack')
-    this.isflipped = false
     this.setColor()
   }
 
   /**
-   *
-   */
-  connectedCallback () {
-    this.cardBack.addEventListener('click', () => {
-      this.flip()
-      console.log('you clicked me')
-      this.cardBack.disabled = true
-    })
-
-    this.cardFront.addEventListener('click', () => {
-      this.flip()
-      this.cardFront.disabled = true
-      console.log('you clicked me')
-    })
-  }
-
-  /**
-   *
-   */
-  disconnectedCallback () {
-    this.cardBack.removeEventListener('click', () => {
-      this.flip()
-      console.log('you clicked me')
-    })
-
-    this.cardFront.removeEventListener('click', () => {
-      this.flip()
-      console.log('you clicked me')
-    })
-  }
-
-  /**
-   *
+   *Flips card.
    */
   flip () {
     // by default the front is set to hidden, so toggle it too show
@@ -105,7 +70,7 @@ class myCard extends HTMLElement {
   }
 
   /**
-   *
+   *Hides the card from DOM by making it white.
    */
   hideCard () {
     this.cardBack.disabled = true
@@ -115,10 +80,48 @@ class myCard extends HTMLElement {
   }
 
   /**
-   *
+   *Sets colot to the dataset.
    */
   setColor () {
     this.shadowRoot.querySelector('.cardFront').style.backgroundColor = this.dataset.color
+  }
+
+  /**
+   * Adds event when you click the back of the card.
+   */
+  onClickCardBack () {
+    this.cardBack.addEventListener('click', () => {
+      this.flip()
+      this.cardBack.disabled = true
+      console.log('you flipped me')
+    })
+  }
+
+  /**
+   * Adds event when you click the front of the card.
+   */
+  onclickCardFront () {
+    this.cardFront.addEventListener('click', () => {
+      this.flip()
+      this.cardFront.disabled = true
+      console.log('you flipped me')
+    })
+  }
+
+  /**
+   *Adds event.
+   */
+  connectedCallback () {
+    this.onClickCardBack()
+    this.onclickCardFront()
+  }
+
+  /**
+   *Removes event.
+   */
+  disconnectedCallback () {
+    this.onClickCardBack()
+    this.onclickCardFront()
   }
 }
 
