@@ -17,7 +17,7 @@ template.innerHTML = `
     border-radius: 25px;
     border: none;
     padding: 10px;
-    margine: none;
+    margin: none;
   }
 
   textarea {
@@ -52,15 +52,14 @@ template.innerHTML = `
 
   <div> welcome to the chat</div>
   <div id="chat-container"> </div>
-<form name="chat-app" id="chat-app">
- <textarea rows="2" cols="70" id="msgInput"> </textarea>
-  <input type="submit" value="Send" id="sendMsg">
-  <button id="emoji">emoji</button>
-  <div id="emoji-container"> 
-    <emoji-picker class="show" id="emojiEl"></emoji-picker>
-  </div>
-
-</form>
+  <form name="chat-app" id="chat-app">
+    <textarea rows="2" cols="70" id="msgInput"> </textarea>
+    <input type="submit" value="Send" id="sendMsg">
+    <button id="emoji">emoji</button>
+      <div id="emoji-container"> 
+        <emoji-picker class="show" id="emojiEl"></emoji-picker>
+      </div>
+  </form>
   `
 /**
  * Chat app.
@@ -81,12 +80,11 @@ class myChat extends HTMLElement {
     this.sendMsgBtn = this.shadowRoot.querySelector('#sendMsg')
     this.chatAppForm = this.shadowRoot.querySelector('#chat-app')
     this.msgInput = this.shadowRoot.querySelector('#msgInput')
-    this.storage = []
     this.chatContainer = this.shadowRoot.querySelector('#chat-container')
-    // set storage array to previous chat history
-    this.storage = this.getChatHistory()
     this.emojiBtn = this.shadowRoot.querySelector('#emoji')
     this.emojiElement = this.shadowRoot.querySelector('#emojiEl')
+    this.storage = []
+    this.storage = this.getChatHistory()
   }
 
   /**
@@ -115,19 +113,33 @@ class myChat extends HTMLElement {
   }
 
   /**
-   * Prevents submit.
-   *
-   * @param {object} e event.
+   * Prevents submit on the form.
    */
-  prevent (e) {
-    e.preventDefault()
+  prevent () {
+    this.chatAppForm.addEventListener('submit', (e) => e.preventDefault())
   }
 
   /**
    * Create local storage for chat history.
    */
-  createLocalStorage () {
+  createChatHistory () {
     localStorage.setItem('userChat', JSON.stringify(this.storage))
+  }
+
+  /**
+   *Get chat history from local storage.
+   *
+   *@returns {JSON} chat history.
+   */
+  getChatHistory () {
+    let chatHistory = localStorage.getItem('userChat')
+
+    if (chatHistory === null) {
+      this.createChatHistory()
+      chatHistory = localStorage.getItem('userChat')
+    }
+    // return in json
+    return JSON.parse(chatHistory)
   }
 
   /**
@@ -156,42 +168,56 @@ class myChat extends HTMLElement {
   }
 
   /**
-   *Get chat history from local storage.
+   * Saves chat to local storage.
    *
-   *@returns {JSON} chat history.
+   * @param {object} chat includes key and value for username and data eg {username, data}.
    */
-  getChatHistory () {
-    let chatHistory = localStorage.getItem('userChat')
-
-    if (chatHistory === null) {
-      this.createLocalStorage()
-      chatHistory = localStorage.getItem('userChat')
-    }
-    // return in json
-    return JSON.parse(chatHistory)
+  saveChatToLocalStorage (chat) {
+    this.storage.push(chat)
   }
 
   /**
    *Displays msg that user has joined the chat.
    */
   userJoinedChat () {
-    this.createChat(this.name, ' joined the chat')
+    const username = this.name
+    const data = ' joined the chat'
+    this.createChat(username, data)
+    this.saveChatToLocalStorage({ username, data })
   }
 
   /**
    *Displays msg that user has left the chat.
    */
   userLeftChat () {
-    this.createChat(this.name, ' has left the chat')
+    const username = this.name
+    const data = ' has left the chat'
+    this.createChat(username, data)
+    this.saveChatToLocalStorage({ username, data })
+  }
+
+  /**
+   * Takes the lastest 20 chats in array and sets it as the new array value.
+   */
+  filterChatHistory () {
+    this.storage = this.storage.slice(-19)
+    // this.chatContainer.textContent = this.storage
+  }
+
+  /**
+   * Remove the first chat from DOM when a new msg gets sent.
+   */
+  filterChatFromDOM () {
+    if (this.getChatHistory().length > 19 || this.getChatHistory().length === null) {
+      this.chatContainer.removeChild(this.chatContainer.childNodes[0])
+    }
   }
 
   /**
    * Renders chat history when you open the chat again.
    */
   loadChatHistory () {
-    this.storage = this.storage.slice(-19)
-    console.log(this.storage)
-    this.chatContainer.textContent = this.storage
+    this.filterChatHistory()
     this.storage.forEach(chat => {
       const { username, data } = chat
       this.createChat(username, data)
@@ -215,7 +241,7 @@ class myChat extends HTMLElement {
    */
   socketOpen () {
     this.socket.addEventListener('open', () => {
-      this.userJoinedChat()
+      // this.userJoinedChat()
       // upon opening the chat, load chat history
       this.loadChatHistory()
     })
@@ -228,14 +254,11 @@ class myChat extends HTMLElement {
     this.socket.addEventListener('message', (event) => {
       // parse data to json
       const msgJSON = JSON.parse(event.data)
-      // everytime theres a new chat, send to local storage.
-      this.storage.push({ username: msgJSON.username, data: msgJSON.data, channel: msgJSON.channel })
-      //this.createLocalStorage()
-      // delete the first div in container, not the best solution but it works
-      if (this.getChatHistory().length > 19) {
-        this.chatContainer.removeChild(this.chatContainer.childNodes[0])
-      }
-      this.createChat(msgJSON.username, msgJSON.data)
+      const { username, data, channel } = msgJSON
+      this.saveChatToLocalStorage({ username, data, channel })
+      this.createChat(username, data)
+      this.filterChatFromDOM()
+      this.createChatHistory()
     })
   }
 
@@ -243,11 +266,11 @@ class myChat extends HTMLElement {
    *When socket closes.
    */
   socketClose () {
-    this.socket.addEventListener('close', this.userLeftChat())
+    // this.socket.addEventListener('close', this.userLeftChat())
   }
 
   /**
-   *
+   *When sending msg to server,take input value from textarea and send it as a string, then clear input box.
    */
   onSendingMsg () {
     // send msg to server
@@ -259,7 +282,25 @@ class myChat extends HTMLElement {
   }
 
   /**
-   *
+   * When an emoticon is picked, add it to the input box.
+   */
+  onEmojiClick () {
+    this.shadowRoot.querySelector('emoji-picker').addEventListener('emoji-click', event => {
+      this.msgInput.value = this.msgInput.value + event.detail.unicode
+    })
+  }
+
+  /**
+   * Show or hide the emoji-picker element.
+   */
+  toggleEmoji () {
+    this.emojiBtn.addEventListener('click', () => {
+      this.emojiElement.classList.toggle('show')
+    })
+  }
+
+  /**
+   * Connects to the school server.
    */
   schoolChannel () {
     this.socketOpen()
@@ -269,23 +310,28 @@ class myChat extends HTMLElement {
   }
 
   /**
-   *
+   * All events in the chat app.
    */
-  connectedCallback () {
-    this.chatAppForm.addEventListener('submit', this.prevent)
+  chatEvents () {
     this.schoolChannel()
-    this.shadowRoot.querySelector('emoji-picker').addEventListener('emoji-click', event => {
-      console.log(event.detail)
-      console.log(event.detail.unicode)
-      this.msgInput.value = this.msgInput.value + event.detail.unicode
-    })
-
-    this.emojiBtn.addEventListener('click', () => {
-      this.emojiElement.classList.toggle('show')
-    })
+    this.prevent()
+    this.onEmojiClick()
+    this.toggleEmoji()
   }
 
-  // remove event
+  /**
+   * Adds event.
+   */
+  connectedCallback () {
+    this.chatEvents()
+  }
+
+  /**
+   * Removes event.
+   */
+  disconnectedCallback () {
+    this.chatEvents()
+  }
 }
 
 window.customElements.define('my-chat', myChat)
